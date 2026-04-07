@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Personal Loan Agreement — Florida</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+<style>
+:root {
+  --bg: #ffffff; --bg2: #f5f5f4; --text: #1a1a1a; --text2: #6b7280;
+  --border: rgba(0,0,0,0.15); --border2: rgba(0,0,0,0.25);
+  --info-bg: #eff6ff; --info-text: #1d4ed8;
+  --danger: #dc2626; --radius: 10px; --radius-lg: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1c1c1e; --bg2: #2c2c2e; --text: #f5f5f7; --text2: #98989f;
+    --border: rgba(255,255,255,0.12); --border2: rgba(255,255,255,0.22);
+    --info-bg: #1e3a5f; --info-text: #93c5fd;
+  }
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { height: 100%; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100%; }
+.app { max-width: 520px; margin: 0 auto; }
+
+/* Progress */
+.prog-bar { padding: .75rem 1rem .3rem; background: var(--bg); border-bottom: 0.5px solid var(--border); position: sticky; top: 0; z-index: 100; }
+.dots { display: flex; align-items: center; gap: 6px; justify-content: center; }
+.dot { height: 5px; border-radius: 3px; background: var(--border2); transition: all .25s ease; }
+.dot.on { background: var(--text); width: 22px; }
+.dot.done { background: var(--text2); width: 8px; }
+.dot.todo { width: 8px; }
+.prog-label { font-size: 11px; color: var(--text2); text-align: center; padding: .4rem 0 0; letter-spacing: .03em; }
+
+/* Steps */
+.step { display: none; padding: 1rem 1rem .5rem; }
+.step.on { display: block; }
+.sh { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 3px; margin-top: .5rem; letter-spacing: -.3px; }
+.sd { font-size: 13px; color: var(--text2); margin-bottom: 1.25rem; line-height: 1.55; }
+
+/* FL badge */
+.fl-badge { display: inline-flex; align-items: center; font-size: 11px; font-weight: 600; background: var(--info-bg); color: var(--info-text); border-radius: 20px; padding: 3px 10px; margin-bottom: 1rem; letter-spacing: .04em; }
+
+/* Fields */
+.fl { margin-bottom: 14px; }
+.fl label { display: block; font-size: 12px; color: var(--text2); margin-bottom: 5px; font-weight: 500; letter-spacing: .02em; }
+input[type=text], input[type=number], input[type=email], input[type=tel], input[type=date] {
+  width: 100%; font-size: 16px; padding: 13px 14px;
+  border: 1px solid var(--border2); border-radius: var(--radius);
+  background: var(--bg); color: var(--text);
+  -webkit-appearance: none; appearance: none;
+  transition: border-color .15s;
+}
+input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,.12); }
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* Toggle */
+.tog-row { display: flex; border: 1px solid var(--border2); border-radius: var(--radius); overflow: hidden; margin-bottom: 1rem; }
+.tog { flex: 1; padding: 12px 8px; font-size: 13px; font-weight: 600; background: transparent; border: none; cursor: pointer; color: var(--text2); text-align: center; line-height: 1.3; transition: background .15s, color .15s; }
+.tog.on { background: var(--text); color: var(--bg); }
+
+/* Calc box */
+.calc-box { background: var(--bg2); border-radius: var(--radius); padding: 14px; margin-top: 12px; }
+.cr { display: flex; justify-content: space-between; font-size: 14px; padding: 4px 0; color: var(--text); }
+.cv { font-weight: 600; }
+.divrow { border-top: 1px solid var(--border); padding-top: 8px; margin-top: 4px; }
+
+/* Warning */
+.warn { font-size: 12px; color: var(--danger); margin-top: 4px; display: none; }
+
+/* Canvas */
+canvas.sig {
+  width: 100%; height: 120px;
+  border: 1px solid var(--border2); border-radius: var(--radius);
+  cursor: crosshair; touch-action: none; display: block;
+  background: var(--bg);
+}
+.clr-sig { font-size: 12px; color: var(--text2); text-align: right; margin-top: 6px; cursor: pointer; display: block; padding: 4px 0; }
+
+/* Nav buttons */
+.nav { display: flex; gap: 10px; margin-top: 1.5rem; margin-bottom: .5rem; }
+.btn { flex: 1; padding: 16px 12px; border-radius: var(--radius); font-size: 16px; font-weight: 600; cursor: pointer; border: 1px solid var(--border2); background: transparent; color: var(--text); text-align: center; transition: opacity .15s, transform .1s; }
+.btn:active { transform: scale(.97); }
+.btn-p { background: var(--text); color: var(--bg); border-color: transparent; }
+.btn-s { background: transparent; }
+
+/* Review */
+.rv-sec { margin-bottom: 1.5rem; }
+.rv-hd { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--text2); padding-bottom: 6px; margin-bottom: 10px; border-bottom: 1px solid var(--border); }
+.rv-row { display: flex; justify-content: space-between; font-size: 14px; padding: 5px 0; color: var(--text); gap: 12px; }
+.rv-val { font-weight: 600; text-align: right; flex-shrink: 0; }
+
+/* Sched */
+.sched-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius); border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 11px; }
+th { text-align: right; font-weight: 600; color: var(--text2); padding: 6px 6px; background: var(--bg2); border-bottom: 1px solid var(--border); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+td { padding: 5px 6px; border-bottom: 1px solid var(--border); text-align: right; font-variant-numeric: tabular-nums; }
+tr:last-child td { border-bottom: none; }
+.more-rows { font-size: 11px; color: var(--text2); text-align: center; padding: 6px; font-style: italic; }
+
+/* Export */
+.exp-btns { display: flex; flex-direction: column; gap: 10px; margin-top: 1.25rem; }
+.exp-btns .btn { flex: none; }
+
+/* Sig mini */
+canvas.sig-mini { width: 100%; height: 52px; border: 1px solid var(--border); border-radius: var(--radius); display: block; background: var(--bg); }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="prog-bar">
+    <div class="dots">
+      <div class="dot on" id="d0"></div>
+      <div class="dot todo" id="d1"></div>
+      <div class="dot todo" id="d2"></div>
+      <div class="dot todo" id="d3"></div>
+    </div>
+    <div class="prog-label" id="progLabel">Step 1 of 4 — Loan terms</div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step on" id="s0">
+    <div class="sh">Loan terms</div>
+    <div class="sd">Both parties agree on these terms first. Pass the phone between steps to sign.</div>
+    <div class="fl-badge">State of Florida</div>
+    <div class="tog-row">
+      <button class="tog on" id="togI" onclick="setMode('i')">Monthly installments</button>
+      <button class="tog" id="togP" onclick="setMode('p')">Paid in full by date</button>
+    </div>
+    <div class="fl"><label>Principal amount ($)</label><input type="number" id="principal" placeholder="10,000" min="0" step="0.01" inputmode="decimal" oninput="recalc()"></div>
+    <div class="fl">
+      <label>Annual interest rate (%)</label>
+      <input type="number" id="rate" placeholder="5.00" min="0" step="0.01" inputmode="decimal" oninput="recalc();chkRate()">
+      <div class="warn" id="rWarn">Florida § 687.02 caps personal loan interest at 18% per annum. Rates above this may be unenforceable.</div>
+    </div>
+    <div class="fl"><label>Loan start date</label><input type="date" id="startDate" oninput="recalc()"></div>
+    <div class="fl" id="termWrap"><label>Repayment term (months)</label><input type="number" id="term" placeholder="12" min="1" step="1" inputmode="numeric" oninput="recalc()"></div>
+    <div class="fl" id="ddWrap" style="display:none"><label>Paid in full by</label><input type="date" id="dueDate" oninput="recalc()"></div>
+    <div class="g2">
+      <div class="fl"><label>Late fee (%)</label><input type="number" id="lateFee" value="5" min="0" step="0.1" inputmode="decimal"></div>
+      <div class="fl"><label>Florida county</label><input type="text" id="county" placeholder="Pinellas"></div>
+    </div>
+    <div class="calc-box" id="calcI">
+      <div class="cr"><span>Monthly payment</span><span class="cv" id="dMo">—</span></div>
+      <div class="cr"><span>Total repayment</span><span class="cv" id="dTot">—</span></div>
+      <div class="cr divrow"><span>Total interest</span><span class="cv" id="dInt">—</span></div>
+    </div>
+    <div class="calc-box" id="calcP" style="display:none">
+      <div class="cr"><span>Days outstanding</span><span class="cv" id="dDays">—</span></div>
+      <div class="cr"><span>Interest accrued</span><span class="cv" id="dPIFI">—</span></div>
+      <div class="cr divrow"><span>Total due by deadline</span><span class="cv" id="dPIFT">—</span></div>
+    </div>
+    <div class="nav"><button class="btn btn-p" onclick="goTo(1)">Continue — Lender info</button></div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step" id="s1">
+    <div class="sh">Lender information</div>
+    <div class="sd">The person providing the loan fills this out and signs, then passes the phone to the borrower.</div>
+    <div class="fl"><label>Full legal name</label><input type="text" id="lName" placeholder="Jane Smith" autocomplete="name"></div>
+    <div class="fl"><label>Street address</label><input type="text" id="lAddr" placeholder="123 Main St" autocomplete="street-address"></div>
+    <div class="g2">
+      <div class="fl"><label>City</label><input type="text" id="lCity" placeholder="Tampa"></div>
+      <div class="fl"><label>ZIP</label><input type="text" id="lZip" placeholder="33601" inputmode="numeric"></div>
+    </div>
+    <div class="fl"><label>Email</label><input type="email" id="lEmail" placeholder="jane@example.com" inputmode="email"></div>
+    <div class="fl"><label>Phone</label><input type="tel" id="lPhone" placeholder="(813) 555-0100" inputmode="tel"></div>
+    <div class="fl" style="margin-top:1rem"><label>Lender signature — draw below</label><canvas class="sig" id="lSig"></canvas><span class="clr-sig" onclick="clrSig('lSig')">Clear</span></div>
+    <div class="fl"><label>Date signed</label><input type="date" id="lDate"></div>
+    <div class="nav">
+      <button class="btn btn-s" onclick="goTo(0)">Back</button>
+      <button class="btn btn-p" onclick="goTo(2)">Continue — Borrower</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step" id="s2">
+    <div class="sh">Borrower information</div>
+    <div class="sd">The person receiving the loan fills this out and signs below.</div>
+    <div class="fl"><label>Full legal name</label><input type="text" id="bName" placeholder="John Doe" autocomplete="name"></div>
+    <div class="fl"><label>Street address</label><input type="text" id="bAddr" placeholder="456 Oak Ave" autocomplete="street-address"></div>
+    <div class="g2">
+      <div class="fl"><label>City</label><input type="text" id="bCity" placeholder="St. Petersburg"></div>
+      <div class="fl"><label>ZIP</label><input type="text" id="bZip" placeholder="33701" inputmode="numeric"></div>
+    </div>
+    <div class="fl"><label>Email</label><input type="email" id="bEmail" placeholder="john@example.com" inputmode="email"></div>
+    <div class="fl"><label>Phone</label><input type="tel" id="bPhone" placeholder="(727) 555-0200" inputmode="tel"></div>
+    <div class="fl" style="margin-top:1rem"><label>Borrower signature — draw below</label><canvas class="sig" id="bSig"></canvas><span class="clr-sig" onclick="clrSig('bSig')">Clear</span></div>
+    <div class="fl"><label>Date signed</label><input type="date" id="bDate"></div>
+    <div class="nav">
+      <button class="btn btn-s" onclick="goTo(1)">Back</button>
+      <button class="btn btn-p" onclick="goTo(3)">Review agreement</button>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step" id="s3">
+    <div class="sh">Review &amp; export</div>
+    <div class="sd">Confirm everything looks correct before exporting the signed PDF.</div>
+    <div id="reviewContent"></div>
+    <div class="exp-btns">
+      <button class="btn btn-p" onclick="exportPDF()">Export PDF</button>
+      <button class="btn btn-s" onclick="sharePDF()">Share</button>
+    </div>
+    <div class="nav">
+      <button class="btn btn-s" onclick="goTo(2)">Back</button>
+      <button class="btn btn-s" onclick="startOver()">Start over</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const refNum = 'PLA-' + Math.random().toString(36).substr(2,8).toUpperCase();
+const docDate = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+const fmt = n => '$' + Number(n).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+const fmtD = s => s ? new Date(s+'T12:00:00').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '—';
+const v = id => { const el=document.getElementById(id); return el ? el.value : ''; };
+let mode = 'i';
+let schedule = [];
+
+['startDate','lDate','bDate'].forEach(id => {
+  const el=document.getElementById(id);
+  if(el) el.value = new Date().toISOString().slice(0,10);
+});
+
+let cur = 0;
+const LABELS = ['Step 1 of 4 — Loan terms','Step 2 of 4 — Lender info','Step 3 of 4 — Borrower info','Step 4 of 4 — Review & export'];
+
+function goTo(n) {
+  document.getElementById('s'+cur).classList.remove('on');
+  document.getElementById('s'+n).classList.add('on');
+  cur = n;
+  document.getElementById('progLabel').textContent = LABELS[n];
+  ['d0','d1','d2','d3'].forEach((id,i) => {
+    const el=document.getElementById(id);
+    el.style.width = i===n?'22px':'8px';
+    el.className='dot '+(i<n?'done':i===n?'on':'todo');
+  });
+  if(n===3) renderReview();
+  window.scrollTo(0,0);
+}
+
+function setMode(m) {
+  mode=m;
+  document.getElementById('togI').className='tog'+(m==='i'?' on':'');
+  document.getElementById('togP').className='tog'+(m==='p'?' on':'');
+  document.getElementById('termWrap').style.display=m==='i'?'':'none';
+  document.getElementById('ddWrap').style.display=m==='p'?'':'none';
+  document.getElementById('calcI').style.display=m==='i'?'':'none';
+  document.getElementById('calcP').style.display=m==='p'?'':'none';
+  recalc();
+}
+
+function chkRate() {
+  const r=parseFloat(v('rate'))||0;
+  document.getElementById('rWarn').style.display=r>18?'block':'none';
+}
+
+function recalc() {
+  const P=parseFloat(v('principal'))||0;
+  const rate=parseFloat(v('rate'))||0;
+  const sd=v('startDate');
+  schedule=[];
+  if(mode==='i'){
+    const n=parseInt(v('term'))||0;
+    if(P<=0||n<=0){['dMo','dTot','dInt'].forEach(id=>document.getElementById(id).textContent='—');return;}
+    const r=rate/100/12;
+    const M=r===0?P/n:P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
+    document.getElementById('dMo').textContent=fmt(M);
+    document.getElementById('dTot').textContent=fmt(M*n);
+    document.getElementById('dInt').textContent=fmt(M*n-P);
+    let bal=P;
+    const start=sd?new Date(sd+'T12:00:00'):new Date();
+    for(let i=1;i<=n;i++){
+      const d=new Date(start);d.setMonth(d.getMonth()+i);
+      const interest=bal*r;const prin=Math.min(M-interest,bal);bal=Math.max(0,bal-prin);
+      schedule.push({num:i,date:d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),payment:M,principal:prin,interest,balance:bal});
+    }
+  } else {
+    const dd=v('dueDate');
+    if(P<=0||!sd||!dd){['dDays','dPIFI','dPIFT'].forEach(id=>document.getElementById(id).textContent='—');return;}
+    const days=Math.max(0,Math.round((new Date(dd+'T12:00:00')-new Date(sd+'T12:00:00'))/(1000*60*60*24)));
+    const interest=P*(rate/100)*(days/365);
+    const total=P+interest;
+    document.getElementById('dDays').textContent=days+' days';
+    document.getElementById('dPIFI').textContent=fmt(interest);
+    document.getElementById('dPIFT').textContent=fmt(total);
+    schedule=[{num:1,date:fmtD(dd),payment:total,principal:P,interest,balance:0}];
+  }
+}
+
+function setupSig(id){
+  const c=document.getElementById(id);
+  if(!c)return;
+  const ctx=c.getContext('2d');
+  const dark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+  function init(){
+    const w=c.offsetWidth||320,dpr=window.devicePixelRatio||1;
+    c.width=w*dpr;c.height=120*dpr;c.style.height='120px';
+    ctx.scale(dpr,dpr);
+    ctx.strokeStyle=dark?'#d0d0d0':'#111';
+    ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+  }
+  setTimeout(init,80);
+  let drawing=false,lx=0,ly=0;
+  const pos=e=>{const r=c.getBoundingClientRect();const s=e.touches?e.touches[0]:e;return[s.clientX-r.left,s.clientY-r.top];};
+  c.addEventListener('mousedown',e=>{drawing=true;[lx,ly]=pos(e);});
+  c.addEventListener('mousemove',e=>{if(!drawing)return;const[x,y]=pos(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(x,y);ctx.stroke();[lx,ly]=[x,y];});
+  c.addEventListener('mouseup',()=>drawing=false);
+  c.addEventListener('mouseleave',()=>drawing=false);
+  c.addEventListener('touchstart',e=>{e.preventDefault();drawing=true;[lx,ly]=pos(e);},{passive:false});
+  c.addEventListener('touchmove',e=>{e.preventDefault();if(!drawing)return;const[x,y]=pos(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(x,y);ctx.stroke();[lx,ly]=[x,y];},{passive:false});
+  c.addEventListener('touchend',()=>drawing=false);
+}
+function clrSig(id){const c=document.getElementById(id);c.getContext('2d').clearRect(0,0,c.width,c.height);}
+
+function renderReview(){
+  const P=parseFloat(v('principal'))||0;
+  const rate=parseFloat(v('rate'))||0;
+  const county=v('county')||'Pinellas';
+  const lf=v('lateFee')||5;
+  let repayRows='';
+  if(mode==='i'){
+    repayRows=`<div class="rv-row"><span>Repayment</span><span class="rv-val">Monthly installments</span></div>
+    <div class="rv-row"><span>Term</span><span class="rv-val">${v('term')} months</span></div>
+    <div class="rv-row"><span>Monthly payment</span><span class="rv-val">${document.getElementById('dMo').textContent}</span></div>
+    <div class="rv-row"><span>Total repayment</span><span class="rv-val">${document.getElementById('dTot').textContent}</span></div>`;
+  } else {
+    repayRows=`<div class="rv-row"><span>Repayment</span><span class="rv-val">Paid in full by date</span></div>
+    <div class="rv-row"><span>Due date</span><span class="rv-val">${fmtD(v('dueDate'))}</span></div>
+    <div class="rv-row"><span>Total due</span><span class="rv-val">${document.getElementById('dPIFT').textContent}</span></div>`;
+  }
+  let schedHTML='';
+  if(schedule.length>0){
+    const show=schedule.slice(0,5);
+    schedHTML='<div class="sched-wrap"><table><thead><tr><th>#</th><th>Date</th><th>Payment</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead><tbody>';
+    show.forEach(r=>{schedHTML+=`<tr><td>${r.num}</td><td style="white-space:nowrap">${r.date}</td><td>${fmt(r.payment)}</td><td>${fmt(r.principal)}</td><td>${fmt(r.interest)}</td><td>${fmt(r.balance)}</td></tr>`;});
+    if(schedule.length>5)schedHTML+=`<tr><td colspan="6" class="more-rows">+ ${schedule.length-5} more rows in PDF</td></tr>`;
+    schedHTML+='</tbody></table></div>';
+  }
+  document.getElementById('reviewContent').innerHTML=`
+    <div class="rv-sec"><div class="rv-hd">Loan terms</div>
+      <div class="rv-row"><span>Principal</span><span class="rv-val">${fmt(P)}</span></div>
+      <div class="rv-row"><span>Interest rate</span><span class="rv-val">${rate}% per annum</span></div>
+      <div class="rv-row"><span>Start date</span><span class="rv-val">${fmtD(v('startDate'))}</span></div>
+      ${repayRows}
+      <div class="rv-row"><span>Late fee</span><span class="rv-val">${lf}%</span></div>
+      <div class="rv-row"><span>Venue</span><span class="rv-val">${county} County, FL</span></div>
+    </div>
+    <div class="rv-sec"><div class="rv-hd">Lender</div>
+      <div class="rv-row"><span>Name</span><span class="rv-val">${v('lName')||'—'}</span></div>
+      <div class="rv-row"><span>Address</span><span class="rv-val">${v('lAddr')||'—'}, ${v('lCity')} ${v('lZip')}</span></div>
+      <div class="rv-row"><span>Email</span><span class="rv-val">${v('lEmail')||'—'}</span></div>
+    </div>
+    <div class="rv-sec"><div class="rv-hd">Borrower</div>
+      <div class="rv-row"><span>Name</span><span class="rv-val">${v('bName')||'—'}</span></div>
+      <div class="rv-row"><span>Address</span><span class="rv-val">${v('bAddr')||'—'}, ${v('bCity')} ${v('bZip')}</span></div>
+      <div class="rv-row"><span>Email</span><span class="rv-val">${v('bEmail')||'—'}</span></div>
+    </div>
+    ${schedule.length>0?`<div class="rv-sec"><div class="rv-hd">Payment schedule preview</div>${schedHTML}</div>`:''}
+    <div class="rv-sec"><div class="rv-hd">Signatures</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
+        <div>
+          <div style="font-size:12px;color:var(--text2);margin-bottom:4px">Lender</div>
+          <canvas id="lPrev" class="sig-mini"></canvas>
+          <div style="font-size:13px;font-weight:600;margin-top:5px">${v('lName')||'—'}</div>
+          <div style="font-size:12px;color:var(--text2)">${fmtD(v('lDate'))}</div>
+        </div>
+        <div>
+          <div style="font-size:12px;color:var(--text2);margin-bottom:4px">Borrower</div>
+          <canvas id="bPrev" class="sig-mini"></canvas>
+          <div style="font-size:13px;font-weight:600;margin-top:5px">${v('bName')||'—'}</div>
+          <div style="font-size:12px;color:var(--text2)">${fmtD(v('bDate'))}</div>
+        </div>
+      </div>
+    </div>`;
+  setTimeout(()=>{
+    [['lPrev','lSig'],['bPrev','bSig']].forEach(([dst,src])=>{
+      const dc=document.getElementById(dst),sc=document.getElementById(src);
+      if(!dc||!sc)return;
+      const dpr=window.devicePixelRatio||1;
+      dc.width=dc.offsetWidth*dpr;dc.height=52*dpr;dc.style.height='52px';
+      const dctx=dc.getContext('2d');dctx.scale(dpr,dpr);
+      dctx.drawImage(sc,0,0,dc.offsetWidth,52);
+    });
+  },60);
+}
+
+function buildPDF(){
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'letter'});
+  const ml=15,mr=15,mt=18,W=216,H=279,cw=W-ml-mr;
+  let y=mt;
+  const col2=ml+cw/2+5;
+  doc.setFont('helvetica','bold');doc.setFontSize(15);
+  doc.text('PERSONAL LOAN AGREEMENT',W/2,y,{align:'center'});y+=7;
+  doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(120);
+  doc.text(`Agreement No: ${refNum}   |   Prepared: ${docDate}   |   State of Florida`,W/2,y,{align:'center'});
+  doc.setTextColor(0);y+=5;doc.setDrawColor(180);doc.line(ml,y,W-mr,y);y+=6;
+  doc.setFont('helvetica','bold');doc.setFontSize(8);doc.text('THE PARTIES',ml,y);y+=5;
+  doc.text('LENDER',ml,y);doc.text('BORROWER',col2,y);y+=4;
+  doc.setFont('helvetica','normal');doc.setFontSize(8);
+  [[v('lName'),v('bName')],[v('lAddr'),v('bAddr')],[(v('lCity')+', FL '+v('lZip')).trim(),(v('bCity')+', FL '+v('bZip')).trim()],[v('lEmail'),v('bEmail')],[v('lPhone'),v('bPhone')]].forEach(([l,b])=>{
+    if(l||b){doc.text(l||'',ml,y);doc.text(b||'',col2,y);y+=4;}
+  });
+  y+=3;doc.setDrawColor(180);doc.line(ml,y,W-mr,y);y+=6;
+  const P=parseFloat(v('principal'))||0,rate=parseFloat(v('rate'))||0,lf=parseFloat(v('lateFee'))||5,county=v('county')||'Pinellas';
+  doc.setFont('helvetica','bold');doc.setFontSize(8);doc.text('LOAN TERMS',ml,y);y+=5;
+  doc.setFont('helvetica','normal');doc.setFontSize(8);
+  let terms=[];
+  if(mode==='i'){
+    const n=parseInt(v('term'))||0,r=rate/100/12;
+    const M=r===0?P/n:P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
+    terms=[['Repayment type','Monthly installments'],['Principal amount',fmt(P)],['Annual interest rate',rate+'% per annum'],['Loan start date',fmtD(v('startDate'))],['Repayment term',n+' months'],['Monthly payment',fmt(M)],['Total repayment',fmt(M*n)],['Total interest charged',fmt(M*n-P)],['Late fee',lf+'% of overdue payment']];
+  } else {
+    const dd=v('dueDate'),days=Math.max(0,Math.round((new Date(dd+'T12:00:00')-new Date(v('startDate')+'T12:00:00'))/(1000*60*60*24)));
+    const interest=P*(rate/100)*(days/365),total=P+interest;
+    terms=[['Repayment type','Lump-sum (paid in full by date)'],['Principal amount',fmt(P)],['Annual interest rate',rate+'% per annum'],['Loan start date',fmtD(v('startDate'))],['Paid in full by',fmtD(v('dueDate'))],['Days outstanding',days+' days'],['Interest accrued (actual/365)',fmt(interest)],['Total amount due',fmt(total)],['Late fee',lf+'% of overdue amount']];
+  }
+  terms.forEach(([k,val])=>{doc.setTextColor(120);doc.text(k,ml,y);doc.setTextColor(0);doc.text(val,ml+70,y);y+=4.5;});
+  y+=2;doc.setDrawColor(180);doc.line(ml,y,W-mr,y);y+=6;
+  if(schedule.length>0){
+    doc.setFont('helvetica','bold');doc.setFontSize(8);
+    doc.text(mode==='i'?'PAYMENT SCHEDULE':'REPAYMENT SUMMARY',ml,y);y+=3;
+    if(mode==='i'){
+      doc.autoTable({startY:y,head:[['#','Due Date','Payment','Principal','Interest','Balance']],body:schedule.map(r=>[r.num,r.date,fmt(r.payment),fmt(r.principal),fmt(r.interest),fmt(r.balance)]),margin:{left:ml,right:mr},styles:{fontSize:6.5,cellPadding:1.5},headStyles:{fillColor:[40,40,40],textColor:255},alternateRowStyles:{fillColor:[248,248,248]},columnStyles:{0:{cellWidth:8,halign:'left'},1:{cellWidth:30,halign:'left'},2:{cellWidth:30,halign:'right'},3:{cellWidth:30,halign:'right'},4:{cellWidth:30,halign:'right'},5:{cellWidth:30,halign:'right'}}});
+    } else {
+      doc.autoTable({startY:y,head:[['Type','Due Date','Total Due']],body:[['Lump-sum payment',fmtD(v('dueDate')),document.getElementById('dPIFT').textContent]],margin:{left:ml,right:mr},styles:{fontSize:8,cellPadding:2},headStyles:{fillColor:[40,40,40],textColor:255}});
+    }
+    y=doc.lastAutoTable.finalY+5;
+    doc.setDrawColor(180);doc.line(ml,y,W-mr,y);y+=6;
+  }
+  if(y>165){doc.addPage();y=mt;}
+  doc.setFont('helvetica','bold');doc.setFontSize(8);doc.text('TERMS AND CONDITIONS',ml,y);y+=5;
+  doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(55);
+  const repayClause=mode==='i'
+    ?'Borrower shall make equal monthly installment payments per the Payment Schedule. The first payment is due one (1) month after the Start Date, with subsequent payments due on the same calendar day each month until the loan is repaid in full.'
+    :'Borrower shall repay the entire outstanding balance — including all accrued interest — in a single lump-sum payment on or before the Due Date. No periodic payments are required prior to that date, though early payment is permitted without penalty.';
+  const clauses=[
+    `1. LOAN DISBURSEMENT. Lender agrees to lend the Principal Amount to Borrower on or around ${fmtD(v('startDate'))}. Borrower acknowledges receipt and agrees to repay in full with interest as described herein.`,
+    `2. INTEREST. Interest accrues at the Annual Interest Rate stated herein. Pursuant to Florida Statute § 687.02, interest on personal loans may not exceed 18% per annum; any excess shall be reduced to the statutory maximum. Payments apply first to accrued interest, then to principal.`,
+    `3. REPAYMENT. ${repayClause}`,
+    `4. PREPAYMENT. Borrower may prepay this loan in whole or in part at any time without penalty. Prepayments apply first to accrued interest, then to principal.`,
+    `5. LATE PAYMENT. Payments not received within ten (10) days of the due date incur a late fee of ${lf}% of the overdue amount. Total charges shall not exceed Florida's usury limit per § 687.02.`,
+    `6. DEFAULT. An Event of Default occurs if Borrower: (a) fails to make any payment within the 10-day grace period; (b) files for bankruptcy or becomes insolvent; or (c) materially breaches any term herein. Upon default, Lender may declare the entire unpaid balance immediately due and payable.`,
+    `7. GOVERNING LAW & VENUE. This Agreement is governed by the laws of the State of Florida. Pursuant to Florida Statute § 95.11(5)(b), this Agreement carries a five (5) year statute of limitations. Disputes shall be resolved exclusively in the courts of ${county} County, Florida.`,
+    `8. ENTIRE AGREEMENT. This Agreement supersedes all prior negotiations. Any modification must be in writing signed by both parties.`,
+    `9. SEVERABILITY. If any provision is found invalid or unenforceable under Florida law, the remaining provisions shall continue in full force and effect.`
+  ];
+  clauses.forEach(c=>{
+    const lines=doc.splitTextToSize(c,cw);
+    if(y+lines.length*3.5>H-45){doc.addPage();y=mt;}
+    doc.text(lines,ml,y);y+=lines.length*3.5+2;
+  });
+  y+=3;doc.setDrawColor(180);doc.line(ml,y,W-mr,y);y+=6;
+  if(y>H-55){doc.addPage();y=mt;}
+  doc.setTextColor(0);doc.setFont('helvetica','bold');doc.setFontSize(8);doc.text('SIGNATURES',ml,y);y+=4;
+  doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(80);
+  doc.text('By signing below, each party agrees to all terms of this Agreement as of the date written.',ml,y);y+=6;
+  const sigW=cw/2-5;
+  try{doc.addImage(document.getElementById('lSig').toDataURL('image/png'),'PNG',ml,y,sigW,20);}catch(e){}
+  try{doc.addImage(document.getElementById('bSig').toDataURL('image/png'),'PNG',col2-5,y,sigW,20);}catch(e){}
+  y+=22;
+  doc.setTextColor(0);doc.setFontSize(8);
+  doc.text('Lender: '+(v('lName')||'______________________'),ml,y);
+  doc.text('Borrower: '+(v('bName')||'______________________'),col2-5,y);y+=4;
+  doc.setTextColor(120);doc.setFontSize(7.5);
+  doc.text('Date: '+fmtD(v('lDate')),ml,y);
+  doc.text('Date: '+fmtD(v('bDate')),col2-5,y);
+  return doc;
+}
+
+async function exportPDF(){
+  try{const doc=buildPDF();doc.save('loan_agreement_'+refNum+'.pdf');}
+  catch(e){alert('PDF error. Please fill in all required fields.');}
+}
+
+async function sharePDF(){
+  try{
+    const doc=buildPDF();
+    const blob=doc.output('blob');
+    const file=new File([blob],'loan_agreement_'+refNum+'.pdf',{type:'application/pdf'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      await navigator.share({files:[file],title:'Personal Loan Agreement',text:'Loan Agreement '+refNum});
+    } else {
+      doc.save('loan_agreement_'+refNum+'.pdf');
+    }
+  }catch(e){
+    try{buildPDF().save('loan_agreement_'+refNum+'.pdf');}
+    catch(e2){alert('Unable to generate PDF.');}
+  }
+}
+
+function startOver(){
+  if(confirm('Start a new agreement? All data will be cleared.')) location.reload();
+}
+
+window.addEventListener('load',()=>{
+  setupSig('lSig');
+  setupSig('bSig');
+  recalc();
+});
+</script>
+</body>
+</html>
