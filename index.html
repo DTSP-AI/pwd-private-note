@@ -4,563 +4,1103 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>Personal Loan Agreement — Florida</title>
+<title>Personal Promissory Note & Stock Pledge — Peter W Davidsmeier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 <style>
 :root {
-  --bg: #ffffff; --bg2: #f5f5f4; --text: #1a1a1a; --text2: #6b7280;
-  --border: rgba(0,0,0,0.15); --border2: rgba(0,0,0,0.25);
-  --info-bg: #eff6ff; --info-text: #1d4ed8;
-  --danger: #dc2626; --radius: 10px; --radius-lg: 14px;
+  --bg:       #0d0f14;
+  --bg2:      #141720;
+  --bg3:      #1c2030;
+  --surface:  #1e2235;
+  --gold:     #c9a84c;
+  --gold2:    #e8c97a;
+  --gold-dim: rgba(201,168,76,0.12);
+  --gold-glow:rgba(201,168,76,0.25);
+  --text:     #f0ede8;
+  --text2:    #8b8fa8;
+  --text3:    #5a5e78;
+  --border:   rgba(255,255,255,0.07);
+  --border2:  rgba(201,168,76,0.3);
+  --danger:   #e05c5c;
+  --success:  #5cb88a;
+  --radius:   12px;
+  --radius-lg:18px;
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #1c1c1e; --bg2: #2c2c2e; --text: #f5f5f7; --text2: #98989f;
-    --border: rgba(255,255,255,0.12); --border2: rgba(255,255,255,0.22);
-    --info-bg: #1e3a5f; --info-text: #93c5fd;
-  }
-}
+
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html { height: 100%; }
-body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100%; }
-.app { max-width: 520px; margin: 0 auto; }
-
-/* Progress */
-.prog-bar { padding: .75rem 1rem .3rem; background: var(--bg); border-bottom: 0.5px solid var(--border); position: sticky; top: 0; z-index: 100; }
-.dots { display: flex; align-items: center; gap: 6px; justify-content: center; }
-.dot { height: 5px; border-radius: 3px; background: var(--border2); transition: all .25s ease; }
-.dot.on { background: var(--text); width: 22px; }
-.dot.done { background: var(--text2); width: 8px; }
-.dot.todo { width: 8px; }
-.prog-label { font-size: 11px; color: var(--text2); text-align: center; padding: .4rem 0 0; letter-spacing: .03em; }
-
-/* Steps */
-.step { display: none; padding: 1rem 1rem .5rem; }
-.step.on { display: block; }
-.sh { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 3px; margin-top: .5rem; letter-spacing: -.3px; }
-.sd { font-size: 13px; color: var(--text2); margin-bottom: 1.25rem; line-height: 1.55; }
-
-/* FL badge */
-.fl-badge { display: inline-flex; align-items: center; font-size: 11px; font-weight: 600; background: var(--info-bg); color: var(--info-text); border-radius: 20px; padding: 3px 10px; margin-bottom: 1rem; letter-spacing: .04em; }
-
-/* Fields */
-.fl { margin-bottom: 14px; }
-.fl label { display: block; font-size: 12px; color: var(--text2); margin-bottom: 5px; font-weight: 500; letter-spacing: .02em; }
-input[type=text], input[type=number], input[type=email], input[type=tel], input[type=date] {
-  width: 100%; font-size: 16px; padding: 13px 14px;
-  border: 1px solid var(--border2); border-radius: var(--radius);
-  background: var(--bg); color: var(--text);
-  -webkit-appearance: none; appearance: none;
-  transition: border-color .15s;
+html, body { height: 100%; background: var(--bg); color: var(--text); }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: radial-gradient(ellipse at 20% 0%, rgba(201,168,76,0.06) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 100%, rgba(100,120,200,0.04) 0%, transparent 60%),
+              var(--bg);
+  min-height: 100vh;
 }
-input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,.12); }
+
+/* ── App Shell ───────────────────────────── */
+.app { max-width: 540px; margin: 0 auto; padding-bottom: 2rem; }
+
+/* ── Header ─────────────────────────────── */
+.header {
+  padding: 1.5rem 1.25rem 1rem;
+  display: flex; align-items: flex-start; justify-content: space-between;
+}
+.logo-wrap { display: flex; align-items: center; gap: 10px; }
+.logo-icon {
+  width: 34px; height: 34px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--gold) 0%, #8a6020 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.logo-text { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 600; letter-spacing: 0.04em; }
+.logo-sub { font-size: 10px; color: var(--text2); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 1px; }
+.ref-badge {
+  font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3);
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 6px;
+  padding: 4px 8px; margin-top: 2px;
+}
+
+/* ── Progress ────────────────────────────── */
+.progress {
+  margin: 0 1.25rem 1.5rem;
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px;
+}
+.prog-step {
+  height: 3px; border-radius: 2px; background: var(--bg3);
+  transition: background .3s ease;
+}
+.prog-step.done { background: var(--gold); }
+.prog-step.active { background: var(--gold2); }
+.prog-label { text-align: center; font-size: 11px; color: var(--text2); margin: .4rem 1.25rem 1.25rem; letter-spacing: 0.04em; }
+
+/* ── Steps ───────────────────────────────── */
+.step { display: none; padding: 0 1.25rem; animation: fadeIn .25s ease; }
+.step.on { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+.step-title {
+  font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 600;
+  line-height: 1.2; margin-bottom: 6px; letter-spacing: -0.3px;
+}
+.step-desc { font-size: 13px; color: var(--text2); margin-bottom: 1.5rem; line-height: 1.6; }
+
+/* ── Tier Cards ──────────────────────────── */
+.tiers { display: grid; gap: 10px; margin-bottom: 1.25rem; }
+.tier-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  cursor: pointer;
+  background: var(--bg2);
+  transition: border-color .2s, background .2s, transform .15s;
+  position: relative;
+  overflow: hidden;
+}
+.tier-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--gold-dim) 0%, transparent 60%);
+  opacity: 0; transition: opacity .2s;
+}
+.tier-card:hover { border-color: var(--border2); transform: translateY(-1px); }
+.tier-card:hover::before { opacity: 1; }
+.tier-card.selected { border-color: var(--gold); background: var(--bg3); }
+.tier-card.selected::before { opacity: 1; }
+.tier-header { display: flex; justify-content: space-between; align-items: flex-start; position: relative; }
+.tier-badge {
+  font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  background: var(--gold); color: var(--bg); border-radius: 4px; padding: 3px 7px;
+}
+.tier-amount { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 700; color: var(--gold2); line-height: 1; }
+.tier-shares { font-size: 13px; color: var(--text2); margin-top: 5px; }
+.tier-shares strong { color: var(--text); font-weight: 500; }
+.tier-ratio { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3); margin-top: 4px; }
+.tier-check {
+  width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--text3);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  transition: all .2s; margin-top: 2px;
+}
+.tier-card.selected .tier-check { background: var(--gold); border-color: var(--gold); }
+.tier-check svg { opacity: 0; transition: opacity .2s; }
+.tier-card.selected .tier-check svg { opacity: 1; }
+
+/* Custom tier */
+.tier-custom-row { margin-top: 12px; display: none; }
+.tier-card.selected .tier-custom-row { display: block; }
+.custom-note { font-size: 11px; color: var(--gold); margin-bottom: 8px; font-style: italic; }
+
+/* ── Fields ──────────────────────────────── */
+.field { margin-bottom: 14px; }
+.field label {
+  display: block; font-size: 11px; font-weight: 500; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--text2); margin-bottom: 6px;
+}
+input[type=text], input[type=number], input[type=email], input[type=tel], input[type=date] {
+  width: 100%; font-size: 15px; padding: 13px 14px;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--bg2); color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  -webkit-appearance: none; appearance: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-glow); }
+input::placeholder { color: var(--text3); }
 .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-/* Toggle */
-.tog-row { display: flex; border: 1px solid var(--border2); border-radius: var(--radius); overflow: hidden; margin-bottom: 1rem; }
-.tog { flex: 1; padding: 12px 8px; font-size: 13px; font-weight: 600; background: transparent; border: none; cursor: pointer; color: var(--text2); text-align: center; line-height: 1.3; transition: background .15s, color .15s; }
-.tog.on { background: var(--text); color: var(--bg); }
-
-/* Calc box */
-.calc-box { background: var(--bg2); border-radius: var(--radius); padding: 14px; margin-top: 12px; }
-.cr { display: flex; justify-content: space-between; font-size: 14px; padding: 4px 0; color: var(--text); }
-.cv { font-weight: 600; }
-.divrow { border-top: 1px solid var(--border); padding-top: 8px; margin-top: 4px; }
-
-/* Warning */
-.warn { font-size: 12px; color: var(--danger); margin-top: 4px; display: none; }
-
-/* Canvas */
-canvas.sig {
-  width: 100%; height: 120px;
-  border: 1px solid var(--border2); border-radius: var(--radius);
-  cursor: crosshair; touch-action: none; display: block;
-  background: var(--bg);
+/* ── Info Box ────────────────────────────── */
+.info-box {
+  background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: var(--radius); padding: 14px;
+  margin-bottom: 1.25rem;
 }
-.clr-sig { font-size: 12px; color: var(--text2); text-align: right; margin-top: 6px; cursor: pointer; display: block; padding: 4px 0; }
+.info-box-title { font-size: 11px; font-weight: 600; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+.info-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; padding: 4px 0; }
+.info-label { color: var(--text2); }
+.info-val { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text); font-weight: 500; text-align: right; }
+.divider { border-top: 1px solid var(--border); margin: 8px 0; }
+.info-row.total .info-val { color: var(--gold2); font-size: 14px; }
 
-/* Nav buttons */
-.nav { display: flex; gap: 10px; margin-top: 1.5rem; margin-bottom: .5rem; }
-.btn { flex: 1; padding: 16px 12px; border-radius: var(--radius); font-size: 16px; font-weight: 600; cursor: pointer; border: 1px solid var(--border2); background: transparent; color: var(--text); text-align: center; transition: opacity .15s, transform .1s; }
+/* ── Signature ───────────────────────────── */
+.sig-wrap { margin-bottom: 1.25rem; }
+.sig-label { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text2); margin-bottom: 8px; display: block; }
+canvas.sig {
+  width: 100%; height: 130px; border-radius: var(--radius);
+  border: 1px solid var(--border); background: var(--bg2);
+  cursor: crosshair; touch-action: none; display: block;
+  transition: border-color .15s;
+}
+canvas.sig:hover { border-color: var(--gold); }
+.sig-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
+.clr-btn { font-size: 12px; color: var(--text3); cursor: pointer; padding: 4px 0; }
+.clr-btn:hover { color: var(--text2); }
+.sig-signed { font-size: 11px; color: var(--success); display: flex; align-items: center; gap: 4px; }
+
+/* ── Warn ────────────────────────────────── */
+.warn { font-size: 12px; color: var(--danger); margin-top: 5px; display: none; }
+
+/* ── Nav ─────────────────────────────────── */
+.nav { display: flex; gap: 10px; margin-top: 1.75rem; }
+.btn {
+  flex: 1; padding: 16px 12px; border-radius: var(--radius);
+  font-size: 15px; font-weight: 600; cursor: pointer; border: none;
+  font-family: 'DM Sans', sans-serif;
+  text-align: center; transition: opacity .15s, transform .1s, box-shadow .15s;
+  letter-spacing: 0.01em;
+}
 .btn:active { transform: scale(.97); }
-.btn-p { background: var(--text); color: var(--bg); border-color: transparent; }
-.btn-s { background: transparent; }
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold) 0%, #a87828 100%);
+  color: var(--bg); box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+}
+.btn-primary:hover { box-shadow: 0 6px 28px rgba(201,168,76,0.45); }
+.btn-ghost { background: var(--bg2); color: var(--text2); border: 1px solid var(--border); }
+.btn-ghost:hover { color: var(--text); border-color: var(--border2); }
 
-/* Review */
-.rv-sec { margin-bottom: 1.5rem; }
-.rv-hd { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--text2); padding-bottom: 6px; margin-bottom: 10px; border-bottom: 1px solid var(--border); }
-.rv-row { display: flex; justify-content: space-between; font-size: 14px; padding: 5px 0; color: var(--text); gap: 12px; }
-.rv-val { font-weight: 600; text-align: right; flex-shrink: 0; }
+/* ── Review ──────────────────────────────── */
+.rv-section { margin-bottom: 1.5rem; }
+.rv-heading {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--gold); padding-bottom: 8px; margin-bottom: 10px;
+  border-bottom: 1px solid var(--border2);
+}
+.rv-row { display: flex; justify-content: space-between; font-size: 13px; padding: 5px 0; gap: 12px; }
+.rv-key { color: var(--text2); }
+.rv-val { font-weight: 500; text-align: right; flex-shrink: 0; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text); }
+.rv-val.highlight { color: var(--gold2); font-size: 14px; }
 
-/* Sched */
-.sched-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius); border: 1px solid var(--border); }
-table { width: 100%; border-collapse: collapse; font-size: 11px; }
-th { text-align: right; font-weight: 600; color: var(--text2); padding: 6px 6px; background: var(--bg2); border-bottom: 1px solid var(--border); white-space: nowrap; }
-th:first-child, td:first-child { text-align: left; }
-td { padding: 5px 6px; border-bottom: 1px solid var(--border); text-align: right; font-variant-numeric: tabular-nums; }
-tr:last-child td { border-bottom: none; }
-.more-rows { font-size: 11px; color: var(--text2); text-align: center; padding: 6px; font-style: italic; }
+/* ── Sig Mini ────────────────────────────── */
+.sig-preview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+.sig-preview-box { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; }
+.sig-preview-label { font-size: 11px; color: var(--text2); margin-bottom: 8px; }
+canvas.sig-mini { width: 100%; height: 50px; display: block; border-radius: 6px; }
+.sig-name { font-size: 13px; font-weight: 600; margin-top: 6px; color: var(--text); }
+.sig-date { font-size: 11px; color: var(--text2); margin-top: 2px; }
 
-/* Export */
-.exp-btns { display: flex; flex-direction: column; gap: 10px; margin-top: 1.25rem; }
-.exp-btns .btn { flex: none; }
+/* ── Zelle CTA ───────────────────────────── */
+.zelle-card {
+  background: linear-gradient(135deg, #5c1f78 0%, #3d1852 100%);
+  border: 1px solid rgba(130,70,180,0.4);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 1.25rem;
+  position: relative; overflow: hidden;
+}
+.zelle-card::before {
+  content: ''; position: absolute; top: -30px; right: -30px;
+  width: 100px; height: 100px; border-radius: 50%;
+  background: rgba(130,70,180,0.2);
+}
+.zelle-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.zelle-logo {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: white; display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 14px; color: #6d1a9b; flex-shrink: 0;
+  letter-spacing: -1px;
+}
+.zelle-title { font-size: 16px; font-weight: 600; color: #fff; }
+.zelle-subtitle { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+.zelle-amount {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px; font-weight: 700; color: #fff; margin-bottom: 4px;
+}
+.zelle-to { font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 16px; }
+.zelle-phone {
+  font-family: 'DM Mono', monospace; font-size: 16px; color: #d4a0ff;
+  background: rgba(255,255,255,0.08); border-radius: 8px; padding: 8px 12px;
+  display: inline-block; margin-bottom: 14px; cursor: pointer;
+}
+.btn-zelle {
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg, #6d1a9b 0%, #9b3dd4 100%);
+  color: white; border: none; border-radius: 10px;
+  font-size: 15px; font-weight: 700; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: transform .15s, box-shadow .15s;
+  box-shadow: 0 4px 20px rgba(109,26,155,0.5);
+}
+.btn-zelle:hover { transform: translateY(-1px); box-shadow: 0 6px 28px rgba(109,26,155,0.65); }
+.btn-zelle:active { transform: scale(.97); }
+.zelle-alt { font-size: 11px; color: rgba(255,255,255,0.5); text-align: center; margin-top: 10px; }
 
-/* Sig mini */
-canvas.sig-mini { width: 100%; height: 52px; border: 1px solid var(--border); border-radius: var(--radius); display: block; background: var(--bg); }
+/* ── Export Buttons ──────────────────────── */
+.export-section { display: flex; flex-direction: column; gap: 10px; margin-top: .5rem; }
+
+/* ── Confetti / lock state ───────────────── */
+.locked-note {
+  font-size: 12px; color: var(--text3); text-align: center;
+  padding: 10px; font-style: italic;
+}
+
+/* ── Restore Banner ──────────────────────── */
+.restore-banner {
+  margin: 0 1.25rem .75rem;
+  background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: var(--radius); padding: 10px 14px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; color: var(--text2);
+  animation: fadeIn .3s ease;
+}
+.restore-btns { display: flex; gap: 8px; }
+.restore-btn { font-size: 12px; font-weight: 600; cursor: pointer; padding: 4px 10px; border-radius: 6px; border: none; font-family: 'DM Sans', sans-serif; }
+.restore-yes { background: var(--gold); color: var(--bg); }
+.restore-no { background: var(--bg2); color: var(--text2); border: 1px solid var(--border); }
+
+/* ── Footer ──────────────────────────────── */
+.footer { text-align: center; font-size: 10px; color: var(--text3); padding: 1.5rem 1.25rem; line-height: 1.7; }
+.footer a { color: var(--text3); }
+
+/* ── Step indicator ──────────────────────── */
+.step-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--gold-dim); border: 1px solid var(--border2);
+  font-size: 11px; font-weight: 600; color: var(--gold);
+  margin-bottom: 12px;
+}
+
+/* ── Share notice ────────────────────────── */
+.share-notice { font-size: 12px; color: var(--text2); text-align: center; margin-top: 8px; line-height: 1.5; }
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.4); }
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="prog-bar">
-    <div class="dots">
-      <div class="dot on" id="d0"></div>
-      <div class="dot todo" id="d1"></div>
-      <div class="dot todo" id="d2"></div>
-      <div class="dot todo" id="d3"></div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-wrap">
+      <div class="logo-icon">🤫</div>
+      <div>
+        <div class="logo-text">Peter W Davidsmeier</div>
+        <div class="logo-sub">Personal Promissory Note & Stock Pledge</div>
+      </div>
     </div>
-    <div class="prog-label" id="progLabel">Step 1 of 4 — Loan terms</div>
+    <div class="ref-badge" id="refBadge">—</div>
   </div>
 
-  <!-- STEP 1 -->
+  <!-- RESTORE BANNER (shown if saved data exists) -->
+  <div class="restore-banner" id="restoreBanner" style="display:none">
+    <span>Saved session found. Restore your data?</span>
+    <div class="restore-btns">
+      <button class="restore-btn restore-yes" onclick="restoreSession()">Restore</button>
+      <button class="restore-btn restore-no" onclick="clearSession()">Start fresh</button>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress">
+    <div class="prog-step active" id="p0"></div>
+    <div class="prog-step" id="p1"></div>
+    <div class="prog-step" id="p2"></div>
+    <div class="prog-step" id="p3"></div>
+    <div class="prog-step" id="p4"></div>
+  </div>
+  <div class="prog-label" id="progLabel">Step 1 of 5 — Select investment tier</div>
+
+  <!-- ─── STEP 1: TIER SELECTION ─── -->
   <div class="step on" id="s0">
-    <div class="sh">Loan terms</div>
-    <div class="sd">Both parties agree on these terms first. Pass the phone between steps to sign.</div>
-    <div class="fl-badge">State of Florida</div>
-    <div class="tog-row">
-      <button class="tog on" id="togI" onclick="setMode('i')">Monthly installments</button>
-      <button class="tog" id="togP" onclick="setMode('p')">Paid in full by date</button>
+    <div class="step-num">1</div>
+    <div class="step-title">Select Investment<br>Tier</div>
+    <div class="step-desc">This is a <strong style="color:var(--text)">personal promissory note</strong> — Pete personally borrows from a private lender. DealWhisper Inc. is <em>not</em> a party and has no obligation under this agreement. Shares from Pete's personal allocation are pledged as collateral only. Repayment is due 6 months from signing or upon Pete receiving proceeds from a VC financing — whichever comes first.</div>
+
+    <div class="tiers">
+
+      <div class="tier-card" id="t0" onclick="selectTier(0)">
+        <div class="tier-header">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+              <span class="tier-badge">Flagship</span>
+            </div>
+            <div class="tier-amount">$8,000</div>
+            <div class="tier-shares">Pledged: <strong>2,000 shares</strong></div>
+            <div class="tier-ratio">Best value tier</div>
+          </div>
+          <div class="tier-check">
+            <svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="var(--bg)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="tier-card" id="t1" onclick="selectTier(1)">
+        <div class="tier-header">
+          <div>
+            <div class="tier-amount">$6,000</div>
+            <div class="tier-shares">Pledged: <strong>1,200 shares</strong></div>
+            <div class="tier-ratio">0.2 shares per dollar</div>
+          </div>
+          <div class="tier-check">
+            <svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="var(--bg)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="tier-card" id="t2" onclick="selectTier(2)">
+        <div class="tier-header">
+          <div>
+            <div class="tier-amount">$4,000</div>
+            <div class="tier-shares">Pledged: <strong>800 shares</strong></div>
+            <div class="tier-ratio">0.2 shares per dollar</div>
+          </div>
+          <div class="tier-check">
+            <svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="var(--bg)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="tier-card" id="t3" onclick="selectTier(3)">
+        <div class="tier-header">
+          <div>
+            <div class="tier-amount" id="customAmtDisplay">Custom</div>
+            <div class="tier-shares" id="customShareDisplay">Enter amount below</div>
+            <div class="tier-ratio">0.2 shares per dollar · amounts over $10,000 earn +5% share bonus</div>
+          </div>
+          <div class="tier-check">
+            <svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke="var(--bg)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="tier-custom-row">
+          <div class="custom-note">0.2 shares per dollar — amounts over $10,000 earn a 5% share bonus</div>
+          <div class="field" style="margin-bottom:0">
+            <label>Loan Amount ($)</label>
+            <input type="number" id="customAmt" placeholder="e.g. 12,000" min="1" step="0.01" inputmode="decimal" oninput="calcCustom()">
+          </div>
+          <div class="warn" id="customWarn">Maximum custom loan requires lender confirmation.</div>
+        </div>
+      </div>
+
     </div>
-    <div class="fl"><label>Principal amount ($)</label><input type="number" id="principal" placeholder="10,000" min="0" step="0.01" inputmode="decimal" oninput="recalc()"></div>
-    <div class="fl">
-      <label>Annual interest rate (%)</label>
-      <input type="number" id="rate" placeholder="5.00" min="0" step="0.01" inputmode="decimal" oninput="recalc();chkRate()">
-      <div class="warn" id="rWarn">Florida § 687.02 caps personal loan interest at 18% per annum. Rates above this may be unenforceable.</div>
+
+    <div class="info-box" id="tierInfo" style="display:none">
+      <div class="info-box-title">Summary</div>
+      <div class="info-row"><span class="info-label">Loan amount</span><span class="info-val" id="sumAmt">—</span></div>
+      <div class="info-row"><span class="info-label">Shares pledged as collateral</span><span class="info-val" id="sumShares">—</span></div>
+      <div class="info-row"><span class="info-label">Pete's personal ownership</span><span class="info-val">40% (40,000 shares)</span></div>
+      <div class="info-row"><span class="info-label">Company obligation</span><span class="info-val" style="color:var(--danger)">None — personal note only</span></div>
+      <div class="divider"></div>
+      <div class="info-row"><span class="info-label">Interest rate</span><span class="info-val">5% per annum</span></div>
+      <div class="info-row"><span class="info-label">Repayment trigger</span><span class="info-val">6 months or VC close</span></div>
     </div>
-    <div class="fl"><label>Loan start date</label><input type="date" id="startDate" oninput="recalc()"></div>
-    <div class="fl" id="termWrap"><label>Repayment term (months)</label><input type="number" id="term" placeholder="12" min="1" step="1" inputmode="numeric" oninput="recalc()"></div>
-    <div class="fl" id="ddWrap" style="display:none"><label>Paid in full by</label><input type="date" id="dueDate" oninput="recalc()"></div>
-    <div class="g2">
-      <div class="fl"><label>Late fee (%)</label><input type="number" id="lateFee" value="5" min="0" step="0.1" inputmode="decimal"></div>
-      <div class="fl"><label>Florida county</label><input type="text" id="county" placeholder="Pinellas"></div>
-    </div>
-    <div class="calc-box" id="calcI">
-      <div class="cr"><span>Monthly payment</span><span class="cv" id="dMo">—</span></div>
-      <div class="cr"><span>Total repayment</span><span class="cv" id="dTot">—</span></div>
-      <div class="cr divrow"><span>Total interest</span><span class="cv" id="dInt">—</span></div>
-    </div>
-    <div class="calc-box" id="calcP" style="display:none">
-      <div class="cr"><span>Days outstanding</span><span class="cv" id="dDays">—</span></div>
-      <div class="cr"><span>Interest accrued</span><span class="cv" id="dPIFI">—</span></div>
-      <div class="cr divrow"><span>Total due by deadline</span><span class="cv" id="dPIFT">—</span></div>
-    </div>
-    <div class="nav"><button class="btn btn-p" onclick="goTo(1)">Continue — Lender info</button></div>
+
+    <div class="nav"><button class="btn btn-primary" onclick="goTo(1)">Continue — Loan Terms</button></div>
   </div>
 
-  <!-- STEP 2 -->
+  <!-- ─── STEP 2: LOAN TERMS ─── -->
   <div class="step" id="s1">
-    <div class="sh">Lender information</div>
-    <div class="sd">The person providing the loan fills this out and signs, then passes the phone to the borrower.</div>
-    <div class="fl"><label>Full legal name</label><input type="text" id="lName" placeholder="Jane Smith" autocomplete="name"></div>
-    <div class="fl"><label>Street address</label><input type="text" id="lAddr" placeholder="123 Main St" autocomplete="street-address"></div>
-    <div class="g2">
-      <div class="fl"><label>City</label><input type="text" id="lCity" placeholder="Tampa"></div>
-      <div class="fl"><label>ZIP</label><input type="text" id="lZip" placeholder="33601" inputmode="numeric"></div>
+    <div class="step-num">2</div>
+    <div class="step-title">Loan Terms</div>
+    <div class="step-desc">These terms are auto-filled based on your tier. Adjust the start date and confirm details.</div>
+
+    <div class="field">
+      <label>Agreement date</label>
+      <input type="date" id="startDate" oninput="save()">
     </div>
-    <div class="fl"><label>Email</label><input type="email" id="lEmail" placeholder="jane@example.com" inputmode="email"></div>
-    <div class="fl"><label>Phone</label><input type="tel" id="lPhone" placeholder="(813) 555-0100" inputmode="tel"></div>
-    <div class="fl" style="margin-top:1rem"><label>Lender signature — draw below</label><canvas class="sig" id="lSig"></canvas><span class="clr-sig" onclick="clrSig('lSig')">Clear</span></div>
-    <div class="fl"><label>Date signed</label><input type="date" id="lDate"></div>
+
+    <div class="info-box">
+      <div class="info-box-title">Loan Details</div>
+      <div class="info-row"><span class="info-label">Principal</span><span class="info-val" id="termAmt">—</span></div>
+      <div class="info-row"><span class="info-label">Annual interest rate</span><span class="info-val">5.00%</span></div>
+      <div class="info-row"><span class="info-label">Accrued interest at 6 months</span><span class="info-val" id="termInterest">—</span></div>
+      <div class="divider"></div>
+      <div class="info-row total"><span class="info-label">Total due at repayment</span><span class="info-val highlight" id="termTotal">—</span></div>
+    </div>
+
+    <div class="info-box">
+      <div class="info-box-title">Repayment Trigger</div>
+      <div class="info-row"><span class="info-label" style="font-size:12px;line-height:1.5">Full repayment is due on the <strong style="color:var(--text)">earlier of:</strong> (a) six months from the Agreement date, or (b) the date Borrower receives proceeds from a priced equity financing of $500,000 or more.</span></div>
+    </div>
+
+    <div class="info-box">
+      <div class="info-box-title">Share Pledge (Collateral Only)</div>
+      <div class="info-row"><span class="info-label">Pledged shares</span><span class="info-val" id="termShares">—</span></div>
+      <div class="info-row"><span class="info-label">Issuing company</span><span class="info-val">DealWhisper Inc.</span></div>
+      <div class="info-row"><span class="info-label">Share class</span><span class="info-val">Common Stock</span></div>
+      <div class="info-row"><span class="info-label">Company is a party?</span><span class="info-val" style="color:var(--danger)">No — personal obligation only</span></div>
+      <div class="info-row"><span class="info-label" style="font-size:11px;line-height:1.5;color:var(--text3)">Shares held as collateral only. Transfer occurs solely upon Borrower default. Lender has no claim against DealWhisper Inc. under any circumstance.</span></div>
+    </div>
+
+    <div class="g2">
+      <div class="field"><label>Late fee (%)</label><input type="number" id="lateFee" value="5" min="0" step="0.1" inputmode="decimal" oninput="save()"></div>
+      <div class="field"><label>Florida county</label><input type="text" id="county" placeholder="Pinellas" oninput="save()"></div>
+    </div>
+
     <div class="nav">
-      <button class="btn btn-s" onclick="goTo(0)">Back</button>
-      <button class="btn btn-p" onclick="goTo(2)">Continue — Borrower</button>
+      <button class="btn btn-ghost" onclick="goTo(0)">Back</button>
+      <button class="btn btn-primary" onclick="goTo(2)">Continue — Lender</button>
     </div>
   </div>
 
-  <!-- STEP 3 -->
+  <!-- ─── STEP 3: LENDER ─── -->
   <div class="step" id="s2">
-    <div class="sh">Borrower information</div>
-    <div class="sd">The person receiving the loan fills this out and signs below.</div>
-    <div class="fl"><label>Full legal name</label><input type="text" id="bName" placeholder="John Doe" autocomplete="name"></div>
-    <div class="fl"><label>Street address</label><input type="text" id="bAddr" placeholder="456 Oak Ave" autocomplete="street-address"></div>
+    <div class="step-num">3</div>
+    <div class="step-title">Lender Information</div>
+    <div class="step-desc">The person <em>providing</em> the loan completes this step. Hand the device to the lender after you fill in your details below.</div>
+
+    <div class="field"><label>Full legal name</label><input type="text" id="lName" placeholder="Jane Smith" autocomplete="name" oninput="save()"></div>
+    <div class="field"><label>Street address</label><input type="text" id="lAddr" placeholder="123 Main St" oninput="save()"></div>
     <div class="g2">
-      <div class="fl"><label>City</label><input type="text" id="bCity" placeholder="St. Petersburg"></div>
-      <div class="fl"><label>ZIP</label><input type="text" id="bZip" placeholder="33701" inputmode="numeric"></div>
+      <div class="field"><label>City</label><input type="text" id="lCity" placeholder="Tampa" oninput="save()"></div>
+      <div class="field"><label>ZIP</label><input type="text" id="lZip" placeholder="33601" inputmode="numeric" oninput="save()"></div>
     </div>
-    <div class="fl"><label>Email</label><input type="email" id="bEmail" placeholder="john@example.com" inputmode="email"></div>
-    <div class="fl"><label>Phone</label><input type="tel" id="bPhone" placeholder="(727) 555-0200" inputmode="tel"></div>
-    <div class="fl" style="margin-top:1rem"><label>Borrower signature — draw below</label><canvas class="sig" id="bSig"></canvas><span class="clr-sig" onclick="clrSig('bSig')">Clear</span></div>
-    <div class="fl"><label>Date signed</label><input type="date" id="bDate"></div>
+    <div class="field"><label>Email</label><input type="email" id="lEmail" placeholder="jane@example.com" inputmode="email" oninput="save()"></div>
+    <div class="field"><label>Phone</label><input type="tel" id="lPhone" placeholder="(813) 555-0100" inputmode="tel" oninput="save()"></div>
+
+    <div class="sig-wrap">
+      <span class="sig-label">Lender signature — draw below</span>
+      <canvas class="sig" id="lSig"></canvas>
+      <div class="sig-actions">
+        <span class="clr-btn" onclick="clrSig('lSig')">✕ Clear</span>
+        <span class="sig-signed" id="lSigDone" style="display:none">✓ Signed</span>
+      </div>
+    </div>
+    <div class="field"><label>Date signed</label><input type="date" id="lDate" oninput="save()"></div>
+
     <div class="nav">
-      <button class="btn btn-s" onclick="goTo(1)">Back</button>
-      <button class="btn btn-p" onclick="goTo(3)">Review agreement</button>
+      <button class="btn btn-ghost" onclick="goTo(1)">Back</button>
+      <button class="btn btn-primary" onclick="goTo(3)">Continue — Borrower</button>
     </div>
   </div>
 
-  <!-- STEP 4 -->
+  <!-- ─── STEP 4: BORROWER ─── -->
   <div class="step" id="s3">
-    <div class="sh">Review &amp; export</div>
-    <div class="sd">Confirm everything looks correct before exporting the signed PDF.</div>
-    <div id="reviewContent"></div>
-    <div class="exp-btns">
-      <button class="btn btn-p" onclick="exportPDF()">Export PDF</button>
-      <button class="btn btn-s" onclick="sharePDF()">Share</button>
+    <div class="step-num">4</div>
+    <div class="step-title">Borrower Information</div>
+    <div class="step-desc">The person <em>receiving</em> the loan fills this out and signs.</div>
+
+    <div class="field"><label>Full legal name</label><input type="text" id="bName" placeholder="Peter W Davidsmeier" autocomplete="name" oninput="save()"></div>
+    <div class="field"><label>Street address</label><input type="text" id="bAddr" placeholder="456 Oak Ave" oninput="save()"></div>
+    <div class="g2">
+      <div class="field"><label>City</label><input type="text" id="bCity" placeholder="St. Petersburg" oninput="save()"></div>
+      <div class="field"><label>ZIP</label><input type="text" id="bZip" placeholder="33701" inputmode="numeric" oninput="save()"></div>
     </div>
+    <div class="field"><label>Email</label><input type="email" id="bEmail" placeholder="pete@dealwhisper.com" inputmode="email" oninput="save()"></div>
+    <div class="field"><label>Phone</label><input type="tel" id="bPhone" placeholder="(727) 400-2225" inputmode="tel" oninput="save()"></div>
+
+    <div class="sig-wrap">
+      <span class="sig-label">Borrower signature — draw below</span>
+      <canvas class="sig" id="bSig"></canvas>
+      <div class="sig-actions">
+        <span class="clr-btn" onclick="clrSig('bSig')">✕ Clear</span>
+        <span class="sig-signed" id="bSigDone" style="display:none">✓ Signed</span>
+      </div>
+    </div>
+    <div class="field"><label>Date signed</label><input type="date" id="bDate" oninput="save()"></div>
+
     <div class="nav">
-      <button class="btn btn-s" onclick="goTo(2)">Back</button>
-      <button class="btn btn-s" onclick="startOver()">Start over</button>
+      <button class="btn btn-ghost" onclick="goTo(2)">Back</button>
+      <button class="btn btn-primary" onclick="goTo(4)">Review Agreement</button>
     </div>
   </div>
+
+  <!-- ─── STEP 5: REVIEW & EXPORT ─── -->
+  <div class="step" id="s4">
+    <div class="step-num">5</div>
+    <div class="step-title">Review &amp; Execute</div>
+    <div class="step-desc">Confirm all details are correct. Both signatures must be present to send payment.</div>
+
+    <div id="reviewContent"></div>
+
+    <!-- Zelle (shown only when both signed) -->
+    <div id="zelleSection" style="display:none">
+      <div class="zelle-card">
+        <div class="zelle-header">
+          <div class="zelle-logo">Z</div>
+          <div>
+            <div class="zelle-title">Send via Zelle</div>
+            <div class="zelle-subtitle">Agreement is fully executed — send funds now</div>
+          </div>
+        </div>
+        <div class="zelle-amount" id="zelleAmt">—</div>
+        <div class="zelle-to">To: Pete (DealWhisper Borrower)</div>
+        <div class="zelle-phone" onclick="copyPhone()" title="Tap to copy">📱 727-400-2225</div>
+        <button class="btn-zelle" onclick="openZelle()">
+          <span>Open Zelle</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <div class="zelle-alt">Or open Zelle manually and send to <strong>727-400-2225</strong></div>
+      </div>
+    </div>
+
+    <div id="zelleBlock" style="display:none">
+      <div class="locked-note">⚠️ Both parties must sign before funds can be sent</div>
+    </div>
+
+    <div class="export-section">
+      <button class="btn btn-primary" onclick="exportPDF()">📄 Download Signed PDF</button>
+      <button class="btn btn-ghost" onclick="sharePDF()">↗ Share Agreement</button>
+    </div>
+    <div class="share-notice">Keep a copy of the signed PDF for your records. This agreement is governed by Florida law.</div>
+
+    <div class="nav">
+      <button class="btn btn-ghost" onclick="goTo(3)">Back</button>
+      <button class="btn btn-ghost" onclick="startOver()">Start Over</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    Personal Promissory Note · State of Florida · Between individuals only<br>
+    DealWhisper Inc. is <strong>not</strong> a party and assumes no obligation under this instrument.<br>
+    Consult a Florida-licensed attorney before executing · § 687.02 · § 95.11(5)(b)
+  </div>
+
 </div>
 
 <script>
-const STORAGE_KEY = 'loan_form_data';
-const savedRef = localStorage.getItem('loan_form_ref');
-const refNum = savedRef || 'PLA-' + Math.random().toString(36).substr(2,8).toUpperCase();
-if(!savedRef) localStorage.setItem('loan_form_ref', refNum);
-const docDate = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
-const fmt = n => '$' + Number(n).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');
-const fmtD = s => s ? new Date(s+'T12:00:00').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '—';
-const v = id => { const el=document.getElementById(id); return el ? el.value : ''; };
-let mode = 'i';
-let schedule = [];
-
-['startDate','lDate','bDate'].forEach(id => {
-  const el=document.getElementById(id);
-  if(el) el.value = new Date().toISOString().slice(0,10);
-});
+// ── State ──────────────────────────────────────────────
+const STORE_KEY = 'dw_loan_v2';
+const ZELLE_PHONE = '7274002225';
+const TIERS = [
+  { amount: 8000, shares: 2000, label: '$8,000', tag: 'Flagship' },
+  { amount: 6000, shares: 1200, label: '$6,000', tag: null },
+  { amount: 4000, shares: 800,  label: '$4,000', tag: null },
+  { amount: 0,    shares: 0,    label: 'Custom', tag: null }
+];
 
 let cur = 0;
-const LABELS = ['Step 1 of 4 — Loan terms','Step 2 of 4 — Lender info','Step 3 of 4 — Borrower info','Step 4 of 4 — Review & export'];
+let selTier = -1;
+let customAmt = 0;
+let refNum = 'DW-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+const today = new Date().toISOString().slice(0, 10);
+const STEP_LABELS = [
+  'Step 1 of 5 — Select investment tier',
+  'Step 2 of 5 — Loan terms',
+  'Step 3 of 5 — Lender information',
+  'Step 4 of 5 — Borrower information',
+  'Step 5 of 5 — Review & execute'
+];
 
-function goTo(n) {
-  document.getElementById('s'+cur).classList.remove('on');
-  document.getElementById('s'+n).classList.add('on');
-  cur = n;
-  document.getElementById('progLabel').textContent = LABELS[n];
-  ['d0','d1','d2','d3'].forEach((id,i) => {
-    const el=document.getElementById(id);
-    el.style.width = i===n?'22px':'8px';
-    el.className='dot '+(i<n?'done':i===n?'on':'todo');
+// ── Init ───────────────────────────────────────────────
+window.addEventListener('load', () => {
+  document.getElementById('refBadge').textContent = refNum;
+  ['startDate', 'lDate', 'bDate'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && !el.value) el.value = today;
   });
-  if(n===3) renderReview();
-  window.scrollTo(0,0);
-}
+  setupSig('lSig');
+  setupSig('bSig');
 
-function setMode(m) {
-  mode=m;
-  document.getElementById('togI').className='tog'+(m==='i'?' on':'');
-  document.getElementById('togP').className='tog'+(m==='p'?' on':'');
-  document.getElementById('termWrap').style.display=m==='i'?'':'none';
-  document.getElementById('ddWrap').style.display=m==='p'?'':'none';
-  document.getElementById('calcI').style.display=m==='i'?'':'none';
-  document.getElementById('calcP').style.display=m==='p'?'':'none';
-  recalc();
-  saveForm();
-}
+  const saved = localStorage.getItem(STORE_KEY);
+  if (saved) {
+    try {
+      const d = JSON.parse(saved);
+      if (d.refNum) {
+        document.getElementById('restoreBanner').style.display = 'flex';
+      }
+    } catch (e) { }
+  }
+});
 
-function chkRate() {
-  const r=parseFloat(v('rate'))||0;
-  document.getElementById('rWarn').style.display=r>18?'block':'none';
-}
-
-function recalc() {
-  const P=parseFloat(v('principal'))||0;
-  const rate=parseFloat(v('rate'))||0;
-  const sd=v('startDate');
-  schedule=[];
-  if(mode==='i'){
-    const n=parseInt(v('term'))||0;
-    if(P<=0||n<=0){['dMo','dTot','dInt'].forEach(id=>document.getElementById(id).textContent='—');return;}
-    const r=rate/100/12;
-    const M=r===0?P/n:P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
-    document.getElementById('dMo').textContent=fmt(M);
-    document.getElementById('dTot').textContent=fmt(M*n);
-    document.getElementById('dInt').textContent=fmt(M*n-P);
-    let bal=P;
-    const start=sd?new Date(sd+'T12:00:00'):new Date();
-    for(let i=1;i<=n;i++){
-      const d=new Date(start);d.setMonth(d.getMonth()+i);
-      const interest=bal*r;const prin=Math.min(M-interest,bal);bal=Math.max(0,bal-prin);
-      schedule.push({num:i,date:d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),payment:M,principal:prin,interest,balance:bal});
+function restoreSession() {
+  document.getElementById('restoreBanner').style.display = 'none';
+  const saved = localStorage.getItem(STORE_KEY);
+  if (!saved) return;
+  try {
+    const d = JSON.parse(saved);
+    if (d.refNum) { refNum = d.refNum; document.getElementById('refBadge').textContent = refNum; }
+    if (d.selTier !== undefined) selectTier(d.selTier, true);
+    if (d.customAmt) {
+      const el = document.getElementById('customAmt');
+      if (el) { el.value = d.customAmt; calcCustom(); }
     }
-  } else {
-    const dd=v('dueDate');
-    if(P<=0||!sd||!dd){['dDays','dPIFI','dPIFT'].forEach(id=>document.getElementById(id).textContent='—');return;}
-    const days=Math.max(0,Math.round((new Date(dd+'T12:00:00')-new Date(sd+'T12:00:00'))/(1000*60*60*24)));
-    const interest=P*(rate/100)*(days/365);
-    const total=P+interest;
-    document.getElementById('dDays').textContent=days+' days';
-    document.getElementById('dPIFI').textContent=fmt(interest);
-    document.getElementById('dPIFT').textContent=fmt(total);
-    schedule=[{num:1,date:fmtD(dd),payment:total,principal:P,interest,balance:0}];
-  }
+    const fields = ['startDate', 'lateFee', 'county', 'lName', 'lAddr', 'lCity', 'lZip', 'lEmail', 'lPhone', 'lDate', 'bName', 'bAddr', 'bCity', 'bZip', 'bEmail', 'bPhone', 'bDate'];
+    fields.forEach(id => { if (d[id] !== undefined) { const el = document.getElementById(id); if (el) el.value = d[id]; } });
+    updateTermsBox();
+  } catch (e) { console.warn('Restore failed', e); }
 }
 
-function setupSig(id){
-  const c=document.getElementById(id);
-  if(!c)return;
-  const ctx=c.getContext('2d');
-  const dark=window.matchMedia('(prefers-color-scheme:dark)').matches;
-  function init(){
-    const w=c.offsetWidth||320,dpr=window.devicePixelRatio||1;
-    c.width=w*dpr;c.height=120*dpr;c.style.height='120px';
-    ctx.scale(dpr,dpr);
-    ctx.strokeStyle=dark?'#d0d0d0':'#111';
-    ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
-  }
-  setTimeout(init,80);
-  let drawing=false,lx=0,ly=0;
-  const pos=e=>{const r=c.getBoundingClientRect();const s=e.touches?e.touches[0]:e;return[s.clientX-r.left,s.clientY-r.top];};
-  c.addEventListener('mousedown',e=>{drawing=true;[lx,ly]=pos(e);});
-  c.addEventListener('mousemove',e=>{if(!drawing)return;const[x,y]=pos(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(x,y);ctx.stroke();[lx,ly]=[x,y];});
-  c.addEventListener('mouseup',()=>{drawing=false;saveSig(id);});
-  c.addEventListener('mouseleave',()=>{drawing=false;saveSig(id);});
-  c.addEventListener('touchstart',e=>{e.preventDefault();drawing=true;[lx,ly]=pos(e);},{passive:false});
-  c.addEventListener('touchmove',e=>{e.preventDefault();if(!drawing)return;const[x,y]=pos(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(x,y);ctx.stroke();[lx,ly]=[x,y];},{passive:false});
-  c.addEventListener('touchend',()=>{drawing=false;saveSig(id);});
+function clearSession() {
+  localStorage.removeItem(STORE_KEY);
+  document.getElementById('restoreBanner').style.display = 'none';
 }
-function clrSig(id){const c=document.getElementById(id);c.getContext('2d').clearRect(0,0,c.width,c.height);localStorage.removeItem('loan_form_'+id);}
 
-function renderReview(){
-  const P=parseFloat(v('principal'))||0;
-  const rate=parseFloat(v('rate'))||0;
-  const county=v('county')||'Pinellas';
-  const lf=v('lateFee')||5;
-  let repayRows='';
-  if(mode==='i'){
-    repayRows=`<div class="rv-row"><span>Repayment</span><span class="rv-val">Monthly installments</span></div>
-    <div class="rv-row"><span>Term</span><span class="rv-val">${v('term')} months</span></div>
-    <div class="rv-row"><span>Monthly payment</span><span class="rv-val">${document.getElementById('dMo').textContent}</span></div>
-    <div class="rv-row"><span>Total repayment</span><span class="rv-val">${document.getElementById('dTot').textContent}</span></div>`;
+function save() {
+  const fields = ['startDate', 'lateFee', 'county', 'lName', 'lAddr', 'lCity', 'lZip', 'lEmail', 'lPhone', 'lDate', 'bName', 'bAddr', 'bCity', 'bZip', 'bEmail', 'bPhone', 'bDate', 'customAmt'];
+  const d = { refNum, selTier, customAmt };
+  fields.forEach(id => { const el = document.getElementById(id); if (el) d[id] = el.value; });
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(d)); } catch (e) { }
+}
+
+// ── Navigation ─────────────────────────────────────────
+function goTo(n) {
+  document.getElementById('s' + cur).classList.remove('on');
+  document.getElementById('s' + n).classList.add('on');
+  cur = n;
+  document.getElementById('progLabel').textContent = STEP_LABELS[n];
+  for (let i = 0; i < 5; i++) {
+    const el = document.getElementById('p' + i);
+    el.className = 'prog-step' + (i < n ? ' done' : i === n ? ' active' : '');
+  }
+  if (n === 1) updateTermsBox();
+  if (n === 4) renderReview();
+  window.scrollTo(0, 0);
+}
+
+// ── Tier logic ─────────────────────────────────────────
+function selectTier(idx, skipSave) {
+  selTier = idx;
+  for (let i = 0; i < 4; i++) {
+    document.getElementById('t' + i).classList.toggle('selected', i === idx);
+  }
+  const tierInfoBox = document.getElementById('tierInfo');
+  tierInfoBox.style.display = 'block';
+
+  const tier = TIERS[idx];
+  if (idx < 3) {
+    document.getElementById('sumAmt').textContent = fmt(tier.amount);
+    document.getElementById('sumShares').textContent = tier.shares.toLocaleString() + ' shares';
+    customAmt = 0;
   } else {
-    repayRows=`<div class="rv-row"><span>Repayment</span><span class="rv-val">Paid in full by date</span></div>
-    <div class="rv-row"><span>Due date</span><span class="rv-val">${fmtD(v('dueDate'))}</span></div>
-    <div class="rv-row"><span>Total due</span><span class="rv-val">${document.getElementById('dPIFT').textContent}</span></div>`;
+    const amt = parseFloat(document.getElementById('customAmt').value) || 0;
+    customAmt = amt;
+    const shares = calcShares(amt);
+    const display = amt > 0 ? fmt(amt) : 'Custom';
+    document.getElementById('customAmtDisplay').textContent = display;
+    document.getElementById('customShareDisplay').textContent = amt > 0 ? `Pledged: ${shares.toLocaleString()} shares` : 'Enter amount below';
+    document.getElementById('sumAmt').textContent = amt > 0 ? fmt(amt) : '—';
+    document.getElementById('sumShares').textContent = amt > 0 ? shares.toLocaleString() + ' shares' : '—';
   }
-  let schedHTML='';
-  if(schedule.length>0){
-    const show=schedule.slice(0,5);
-    schedHTML='<div class="sched-wrap"><table><thead><tr><th>#</th><th>Date</th><th>Payment</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead><tbody>';
-    show.forEach(r=>{schedHTML+=`<tr><td>${r.num}</td><td style="white-space:nowrap">${r.date}</td><td>${fmt(r.payment)}</td><td>${fmt(r.principal)}</td><td>${fmt(r.interest)}</td><td>${fmt(r.balance)}</td></tr>`;});
-    if(schedule.length>5)schedHTML+=`<tr><td colspan="6" class="more-rows">+ ${schedule.length-5} more rows in PDF</td></tr>`;
-    schedHTML+='</tbody></table></div>';
+  if (!skipSave) save();
+}
+
+function calcShares(amt) {
+  if (amt <= 0) return 0;
+  const base = Math.round(amt * 0.2);
+  if (amt > 10000) return Math.round(base * 1.05);
+  return base;
+}
+
+function calcCustom() {
+  const amt = parseFloat(document.getElementById('customAmt').value) || 0;
+  customAmt = amt;
+  const shares = calcShares(amt);
+  const display = amt > 0 ? fmt(amt) : 'Custom';
+  document.getElementById('customAmtDisplay').textContent = display;
+  document.getElementById('customShareDisplay').textContent = amt > 0 ? `Pledged: ${shares.toLocaleString()} shares` : 'Enter amount below';
+  if (selTier === 3) {
+    document.getElementById('sumAmt').textContent = amt > 0 ? fmt(amt) : '—';
+    document.getElementById('sumShares').textContent = amt > 0 ? shares.toLocaleString() + ' shares' : '—';
   }
-  document.getElementById('reviewContent').innerHTML=`
-    <div class="rv-sec"><div class="rv-hd">Loan terms</div>
-      <div class="rv-row"><span>Principal</span><span class="rv-val">${fmt(P)}</span></div>
-      <div class="rv-row"><span>Interest rate</span><span class="rv-val">${rate}% per annum</span></div>
-      <div class="rv-row"><span>Start date</span><span class="rv-val">${fmtD(v('startDate'))}</span></div>
-      ${repayRows}
-      <div class="rv-row"><span>Late fee</span><span class="rv-val">${lf}%</span></div>
-      <div class="rv-row"><span>Venue</span><span class="rv-val">${county} County, FL</span></div>
+  save();
+}
+
+function getActiveAmount() {
+  if (selTier < 0) return 0;
+  if (selTier < 3) return TIERS[selTier].amount;
+  return customAmt;
+}
+
+function getActiveShares() {
+  if (selTier < 0) return 0;
+  if (selTier < 3) return TIERS[selTier].shares;
+  return calcShares(customAmt);
+}
+
+// ── Terms box (Step 2) ──────────────────────────────────
+function updateTermsBox() {
+  const P = getActiveAmount();
+  const rate = 0.05;
+  const interest = P * rate * 0.5; // 6 months
+  const total = P + interest;
+  const shares = getActiveShares();
+  document.getElementById('termAmt').textContent = P > 0 ? fmt(P) : '—';
+  document.getElementById('termInterest').textContent = P > 0 ? fmt(interest) : '—';
+  document.getElementById('termTotal').textContent = P > 0 ? fmt(total) : '—';
+  document.getElementById('termShares').textContent = shares > 0 ? shares.toLocaleString() + ' shares' : '—';
+  const amt = document.getElementById('zelleAmt');
+  if (amt) amt.textContent = P > 0 ? fmt(P) : '—';
+}
+
+// ── Formatting ──────────────────────────────────────────
+const fmt = n => '$' + Number(n).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const fmtD = s => s ? new Date(s + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '—';
+const v = id => { const el = document.getElementById(id); return el ? el.value : ''; };
+
+function sixMonthsOut(dateStr) {
+  if (!dateStr) return '—';
+  const d = new Date(dateStr + 'T12:00:00');
+  d.setMonth(d.getMonth() + 6);
+  return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+}
+
+// ── Signature setup ─────────────────────────────────────
+function setupSig(id) {
+  const c = document.getElementById(id);
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  function init() {
+    const w = c.offsetWidth || 380, dpr = window.devicePixelRatio || 1;
+    c.width = w * dpr; c.height = 130 * dpr; c.style.height = '130px';
+    ctx.scale(dpr, dpr);
+    ctx.strokeStyle = '#d0c8b0'; ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  }
+  setTimeout(init, 80);
+  window.addEventListener('resize', init);
+  let drawing = false, lx = 0, ly = 0, hasMark = false;
+  const pos = e => { const r = c.getBoundingClientRect(); const s = e.touches ? e.touches[0] : e; return [s.clientX - r.left, s.clientY - r.top]; };
+  const startDraw = e => { drawing = true; [lx, ly] = pos(e); };
+  const moveDraw = e => {
+    if (!drawing) return;
+    const [x, y] = pos(e);
+    ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(x, y); ctx.stroke();
+    [lx, ly] = [x, y]; hasMark = true;
+    const doneEl = document.getElementById(id === 'lSig' ? 'lSigDone' : 'bSigDone');
+    if (doneEl) doneEl.style.display = 'flex';
+  };
+  const endDraw = () => drawing = false;
+  c.addEventListener('mousedown', startDraw);
+  c.addEventListener('mousemove', moveDraw);
+  c.addEventListener('mouseup', endDraw);
+  c.addEventListener('mouseleave', endDraw);
+  c.addEventListener('touchstart', e => { e.preventDefault(); startDraw(e); }, { passive: false });
+  c.addEventListener('touchmove', e => { e.preventDefault(); moveDraw(e); }, { passive: false });
+  c.addEventListener('touchend', endDraw);
+  c._hasMark = () => hasMark;
+}
+
+function clrSig(id) {
+  const c = document.getElementById(id);
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
+  c._hasMark = () => false;
+  const doneEl = document.getElementById(id === 'lSig' ? 'lSigDone' : 'bSigDone');
+  if (doneEl) doneEl.style.display = 'none';
+}
+
+function bothSigned() {
+  const l = document.getElementById('lSig');
+  const b = document.getElementById('bSig');
+  const lSigned = l && l._hasMark && l._hasMark();
+  const bSigned = b && b._hasMark && b._hasMark();
+  return lSigned && bSigned;
+}
+
+// ── Review render ───────────────────────────────────────
+function renderReview() {
+  const P = getActiveAmount();
+  const shares = getActiveShares();
+  const rate = 0.05;
+  const interest = P * rate * 0.5;
+  const total = P + interest;
+  const county = v('county') || 'Pinellas';
+  const dueDesc = sixMonthsOut(v('startDate'));
+
+  document.getElementById('reviewContent').innerHTML = `
+    <div class="rv-section">
+      <div class="rv-heading">Investment Tier</div>
+      <div class="rv-row"><span class="rv-key">Principal loan amount</span><span class="rv-val highlight">${fmt(P)}</span></div>
+      <div class="rv-row"><span class="rv-key">Shares pledged as collateral</span><span class="rv-val highlight">${shares.toLocaleString()} shares</span></div>
+      <div class="rv-row"><span class="rv-key">Company</span><span class="rv-val">DealWhisper Inc.</span></div>
+      <div class="rv-row"><span class="rv-key">Share class</span><span class="rv-val">Common Stock</span></div>
     </div>
-    <div class="rv-sec"><div class="rv-hd">Lender</div>
-      <div class="rv-row"><span>Name</span><span class="rv-val">${v('lName')||'—'}</span></div>
-      <div class="rv-row"><span>Address</span><span class="rv-val">${v('lAddr')||'—'}, ${v('lCity')} ${v('lZip')}</span></div>
-      <div class="rv-row"><span>Email</span><span class="rv-val">${v('lEmail')||'—'}</span></div>
+    <div class="rv-section">
+      <div class="rv-heading">Repayment</div>
+      <div class="rv-row"><span class="rv-key">Interest rate</span><span class="rv-val">5.00% per annum</span></div>
+      <div class="rv-row"><span class="rv-key">Interest at 6 months</span><span class="rv-val">${fmt(interest)}</span></div>
+      <div class="rv-row"><span class="rv-key">Total due</span><span class="rv-val highlight">${fmt(total)}</span></div>
+      <div class="rv-row"><span class="rv-key">6-month deadline</span><span class="rv-val">${dueDesc}</span></div>
+      <div class="rv-row"><span class="rv-key">VC trigger threshold</span><span class="rv-val">$500,000 raise</span></div>
     </div>
-    <div class="rv-sec"><div class="rv-hd">Borrower</div>
-      <div class="rv-row"><span>Name</span><span class="rv-val">${v('bName')||'—'}</span></div>
-      <div class="rv-row"><span>Address</span><span class="rv-val">${v('bAddr')||'—'}, ${v('bCity')} ${v('bZip')}</span></div>
-      <div class="rv-row"><span>Email</span><span class="rv-val">${v('bEmail')||'—'}</span></div>
+    <div class="rv-section">
+      <div class="rv-heading">Lender</div>
+      <div class="rv-row"><span class="rv-key">Name</span><span class="rv-val">${v('lName') || '—'}</span></div>
+      <div class="rv-row"><span class="rv-key">Address</span><span class="rv-val">${(v('lAddr') || '—') + (v('lCity') ? ', ' + v('lCity') : '') + (v('lZip') ? ' ' + v('lZip') : '')}</span></div>
+      <div class="rv-row"><span class="rv-key">Email</span><span class="rv-val">${v('lEmail') || '—'}</span></div>
     </div>
-    ${schedule.length>0?`<div class="rv-sec"><div class="rv-hd">Payment schedule preview</div>${schedHTML}</div>`:''}
-    <div class="rv-sec"><div class="rv-hd">Signatures</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
-        <div>
-          <div style="font-size:12px;color:var(--text2);margin-bottom:4px">Lender</div>
+    <div class="rv-section">
+      <div class="rv-heading">Borrower</div>
+      <div class="rv-row"><span class="rv-key">Name</span><span class="rv-val">${v('bName') || '—'}</span></div>
+      <div class="rv-row"><span class="rv-key">Address</span><span class="rv-val">${(v('bAddr') || '—') + (v('bCity') ? ', ' + v('bCity') : '') + (v('bZip') ? ' ' + v('bZip') : '')}</span></div>
+      <div class="rv-row"><span class="rv-key">Email</span><span class="rv-val">${v('bEmail') || '—'}</span></div>
+    </div>
+    <div class="rv-section">
+      <div class="rv-heading">Signatures</div>
+      <div class="sig-preview-grid">
+        <div class="sig-preview-box">
+          <div class="sig-preview-label">Lender</div>
           <canvas id="lPrev" class="sig-mini"></canvas>
-          <div style="font-size:13px;font-weight:600;margin-top:5px">${v('lName')||'—'}</div>
-          <div style="font-size:12px;color:var(--text2)">${fmtD(v('lDate'))}</div>
+          <div class="sig-name">${v('lName') || '—'}</div>
+          <div class="sig-date">${fmtD(v('lDate'))}</div>
         </div>
-        <div>
-          <div style="font-size:12px;color:var(--text2);margin-bottom:4px">Borrower</div>
+        <div class="sig-preview-box">
+          <div class="sig-preview-label">Borrower</div>
           <canvas id="bPrev" class="sig-mini"></canvas>
-          <div style="font-size:13px;font-weight:600;margin-top:5px">${v('bName')||'—'}</div>
-          <div style="font-size:12px;color:var(--text2)">${fmtD(v('bDate'))}</div>
+          <div class="sig-name">${v('bName') || '—'}</div>
+          <div class="sig-date">${fmtD(v('bDate'))}</div>
         </div>
       </div>
     </div>`;
-  setTimeout(()=>{
-    [['lPrev','lSig'],['bPrev','bSig']].forEach(([dst,src])=>{
-      const dc=document.getElementById(dst),sc=document.getElementById(src);
-      if(!dc||!sc)return;
-      const dpr=window.devicePixelRatio||1;
-      dc.width=dc.offsetWidth*dpr;dc.height=52*dpr;dc.style.height='52px';
-      const dctx=dc.getContext('2d');dctx.scale(dpr,dpr);
-      dctx.drawImage(sc,0,0,dc.offsetWidth,52);
+
+  setTimeout(() => {
+    [['lPrev', 'lSig'], ['bPrev', 'bSig']].forEach(([dst, src]) => {
+      const dc = document.getElementById(dst), sc = document.getElementById(src);
+      if (!dc || !sc) return;
+      const dpr = window.devicePixelRatio || 1;
+      dc.width = dc.offsetWidth * dpr; dc.height = 50 * dpr; dc.style.height = '50px';
+      dc.getContext('2d').drawImage(sc, 0, 0, dc.offsetWidth, 50);
     });
-  },60);
+  }, 80);
+
+  const signed = bothSigned();
+  document.getElementById('zelleSection').style.display = signed ? 'block' : 'none';
+  document.getElementById('zelleBlock').style.display = signed ? 'none' : 'block';
+  document.getElementById('zelleAmt').textContent = fmt(P);
 }
 
-function buildPDF(){
-  const {jsPDF}=window.jspdf;
-  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'letter'});
-  const ml=15,mr=15,mt=18,W=216,H=279,cw=W-ml-mr;
-  let y=mt;
-  const col2=ml+cw/2+5;
-  doc.setFont('helvetica','bold');doc.setFontSize(15);
-  doc.text('PERSONAL LOAN AGREEMENT',W/2,y,{align:'center'});y+=7;
-  doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(120);
-  doc.text(`Agreement No: ${refNum}   |   Prepared: ${docDate}   |   State of Florida`,W/2,y,{align:'center'});
-  doc.setTextColor(0);y+=5;doc.setDrawColor(180);doc.line(ml,y,W-mr,y);y+=6;
-  doc.setFont('helvetica','bold');doc.setFontSize(8);doc.text('THE PARTIES',ml,y);y+=5;
-  doc.text('LENDER',ml,y);doc.text('BORROWER',col2,y);y+=4;
-  doc.setFont('helvetica','normal');doc.setFontSize(8);
-  [[v('lName'),v('bName')],[v('lAddr'),v('bAddr')],[(v('lCity')+', FL '+v('lZip')).trim(),(v('bCity')+', FL '+v('bZip')).trim()],[v('lEmail'),v('bEmail')],[v('lPhone'),v('bPhone')]].forEach(([l,b])=>{
-    if(l||b){doc.text(l||'',ml,y);doc.text(b||'',col2,y);y+=4;}
-  });
-  y+=3;doc.setDrawColor(180);doc.line(ml,y,W-mr,y);y+=6;
-  const P=parseFloat(v('principal'))||0,rate=parseFloat(v('rate'))||0,lf=parseFloat(v('lateFee'))||5,county=v('county')||'Pinellas';
-  doc.setFont('helvetica','bold');doc.setFontSize(8);doc.text('LOAN TERMS',ml,y);y+=5;
-  doc.setFont('helvetica','normal');doc.setFontSize(8);
-  let terms=[];
-  if(mode==='i'){
-    const n=parseInt(v('term'))||0,r=rate/100/12;
-    const M=r===0?P/n:P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
-    terms=[['Repayment type','Monthly installments'],['Principal amount',fmt(P)],['Annual interest rate',rate+'% per annum'],['Loan start date',fmtD(v('startDate'))],['Repayment term',n+' months'],['Monthly payment',fmt(M)],['Total repayment',fmt(M*n)],['Total interest charged',fmt(M*n-P)],['Late fee',lf+'% of overdue payment']];
-  } else {
-    const dd=v('dueDate'),days=Math.max(0,Math.round((new Date(dd+'T12:00:00')-new Date(v('startDate')+'T12:00:00'))/(1000*60*60*24)));
-    const interest=P*(rate/100)*(days/365),total=P+interest;
-    terms=[['Repayment type','Lump-sum (paid in full by date)'],['Principal amount',fmt(P)],['Annual interest rate',rate+'% per annum'],['Loan start date',fmtD(v('startDate'))],['Paid in full by',fmtD(v('dueDate'))],['Days outstanding',days+' days'],['Interest accrued (actual/365)',fmt(interest)],['Total amount due',fmt(total)],['Late fee',lf+'% of overdue amount']];
-  }
-  terms.forEach(([k,val])=>{doc.setTextColor(120);doc.text(k,ml,y);doc.setTextColor(0);doc.text(val,ml+70,y);y+=4.5;});
-  y+=2;doc.setDrawColor(180);doc.line(ml,y,W-mr,y);y+=6;
-  if(schedule.length>0){
-    doc.setFont('helvetica','bold');doc.setFontSize(8);
-    doc.text(mode==='i'?'PAYMENT SCHEDULE':'REPAYMENT SUMMARY',ml,y);y+=3;
-    if(mode==='i'){
-      doc.autoTable({startY:y,head:[['#','Due Date','Payment','Principal','Interest','Balance']],body:schedule.map(r=>[r.num,r.date,fmt(r.payment),fmt(r.principal),fmt(r.interest),fmt(r.balance)]),margin:{left:ml,right:mr},styles:{fontSize:6.5,cellPadding:1.5},headStyles:{fillColor:[40,40,40],textColor:255},alternateRowStyles:{fillColor:[248,248,248]},columnStyles:{0:{cellWidth:8,halign:'left'},1:{cellWidth:30,halign:'left'},2:{cellWidth:30,halign:'right'},3:{cellWidth:30,halign:'right'},4:{cellWidth:30,halign:'right'},5:{cellWidth:30,halign:'right'}}});
-    } else {
-      doc.autoTable({startY:y,head:[['Type','Due Date','Total Due']],body:[['Lump-sum payment',fmtD(v('dueDate')),document.getElementById('dPIFT').textContent]],margin:{left:ml,right:mr},styles:{fontSize:8,cellPadding:2},headStyles:{fillColor:[40,40,40],textColor:255}});
-    }
-    y=doc.lastAutoTable.finalY+5;
-    doc.setDrawColor(180);doc.line(ml,y,W-mr,y);y+=6;
-  }
-  if(y>165){doc.addPage();y=mt;}
-  doc.setFont('helvetica','bold');doc.setFontSize(8);doc.text('TERMS AND CONDITIONS',ml,y);y+=5;
-  doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(55);
-  const repayClause=mode==='i'
-    ?'Borrower shall make equal monthly installment payments per the Payment Schedule. The first payment is due one (1) month after the Start Date, with subsequent payments due on the same calendar day each month until the loan is repaid in full.'
-    :'Borrower shall repay the entire outstanding balance — including all accrued interest — in a single lump-sum payment on or before the Due Date. No periodic payments are required prior to that date, though early payment is permitted without penalty.';
-  const clauses=[
-    `1. LOAN DISBURSEMENT. Lender agrees to lend the Principal Amount to Borrower on or around ${fmtD(v('startDate'))}. Borrower acknowledges receipt and agrees to repay in full with interest as described herein.`,
-    `2. INTEREST. Interest accrues at the Annual Interest Rate stated herein. Pursuant to Florida Statute § 687.02, interest on personal loans may not exceed 18% per annum; any excess shall be reduced to the statutory maximum. Payments apply first to accrued interest, then to principal.`,
-    `3. REPAYMENT. ${repayClause}`,
-    `4. PREPAYMENT. Borrower may prepay this loan in whole or in part at any time without penalty. Prepayments apply first to accrued interest, then to principal.`,
-    `5. LATE PAYMENT. Payments not received within ten (10) days of the due date incur a late fee of ${lf}% of the overdue amount. Total charges shall not exceed Florida's usury limit per § 687.02.`,
-    `6. DEFAULT. An Event of Default occurs if Borrower: (a) fails to make any payment within the 10-day grace period; (b) files for bankruptcy or becomes insolvent; or (c) materially breaches any term herein. Upon default, Lender may declare the entire unpaid balance immediately due and payable.`,
-    `7. GOVERNING LAW & VENUE. This Agreement is governed by the laws of the State of Florida. Pursuant to Florida Statute § 95.11(5)(b), this Agreement carries a five (5) year statute of limitations. Disputes shall be resolved exclusively in the courts of ${county} County, Florida.`,
-    `8. ENTIRE AGREEMENT. This Agreement supersedes all prior negotiations. Any modification must be in writing signed by both parties.`,
-    `9. SEVERABILITY. If any provision is found invalid or unenforceable under Florida law, the remaining provisions shall continue in full force and effect.`
+// ── Zelle ───────────────────────────────────────────────
+function openZelle() {
+  const amt = getActiveAmount();
+  // Try Zelle deep link (iOS/Android)
+  const deepLinks = [
+    `zelle://send?phone=${ZELLE_PHONE}`,
+    `zelle://`,
   ];
-  clauses.forEach(c=>{
-    const lines=doc.splitTextToSize(c,cw);
-    if(y+lines.length*3.5>H-45){doc.addPage();y=mt;}
-    doc.text(lines,ml,y);y+=lines.length*3.5+2;
+  let opened = false;
+  // Try app first
+  const tryLink = (url) => {
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = url;
+    document.body.appendChild(iframe);
+    setTimeout(() => document.body.removeChild(iframe), 1000);
+  };
+  tryLink(deepLinks[0]);
+  // Fallback after 1.5s
+  setTimeout(() => {
+    if (!document.hidden) {
+      // App didn't open, show instructions
+      const instructions = `To send via Zelle:\n\n1. Open your Zelle app or bank\n2. Send to: 727-400-2225\n3. Amount: ${fmt(amt)}\n4. Memo: DealWhisper Loan ${refNum}`;
+      alert(instructions);
+    }
+  }, 1500);
+}
+
+function copyPhone() {
+  navigator.clipboard.writeText('727-400-2225').then(() => {
+    const el = document.querySelector('.zelle-phone');
+    const orig = el.textContent;
+    el.textContent = '✓ Copied!';
+    setTimeout(() => el.textContent = orig, 1500);
   });
-  y+=3;doc.setDrawColor(180);doc.line(ml,y,W-mr,y);y+=6;
-  if(y>H-55){doc.addPage();y=mt;}
-  doc.setTextColor(0);doc.setFont('helvetica','bold');doc.setFontSize(8);doc.text('SIGNATURES',ml,y);y+=4;
-  doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(80);
-  doc.text('By signing below, each party agrees to all terms of this Agreement as of the date written.',ml,y);y+=6;
-  const sigW=cw/2-5;
-  try{doc.addImage(document.getElementById('lSig').toDataURL('image/png'),'PNG',ml,y,sigW,20);}catch(e){}
-  try{doc.addImage(document.getElementById('bSig').toDataURL('image/png'),'PNG',col2-5,y,sigW,20);}catch(e){}
-  y+=22;
-  doc.setTextColor(0);doc.setFontSize(8);
-  doc.text('Lender: '+(v('lName')||'______________________'),ml,y);
-  doc.text('Borrower: '+(v('bName')||'______________________'),col2-5,y);y+=4;
-  doc.setTextColor(120);doc.setFontSize(7.5);
-  doc.text('Date: '+fmtD(v('lDate')),ml,y);
-  doc.text('Date: '+fmtD(v('bDate')),col2-5,y);
+}
+
+// ── PDF ─────────────────────────────────────────────────
+function buildPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'letter' });
+  const ml = 16, mr = 16, mt = 18, W = 216, H = 279, cw = W - ml - mr;
+  const col2 = ml + cw / 2 + 5;
+  let y = mt;
+
+  const P = getActiveAmount();
+  const shares = getActiveShares();
+  const rate = 0.05;
+  const interest = P * rate * 0.5;
+  const total = P + interest;
+  const county = v('county') || 'Pinellas';
+  const lf = v('lateFee') || '5';
+
+  // Title
+  doc.setFont('times', 'bold'); doc.setFontSize(14);
+  doc.text('PERSONAL PROMISSORY NOTE AND STOCK PLEDGE AGREEMENT', W / 2, y, { align: 'center' }); y += 6;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(130);
+  doc.text(`Agreement No: ${refNum}   ·   State of Florida   ·   Borrower: Peter W Davidsmeier`, W / 2, y, { align: 'center' }); y += 4;
+  doc.setFont('helvetica', 'italic'); doc.setFontSize(7); doc.setTextColor(150);
+  doc.text('NOTE: DealWhisper Inc. is NOT a party to this Agreement and assumes no liability hereunder.', W / 2, y, { align: 'center' });
+  y += 5;
+  doc.setTextColor(0); doc.setDrawColor(190); doc.line(ml, y, W - mr, y); y += 6;
+
+  // Parties
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.text('PARTIES', ml, y); y += 5;
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5);
+  doc.text('LENDER', ml, y); doc.text('BORROWER', col2, y); y += 4;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5);
+  [[v('lName'), v('bName')],
+  [v('lAddr'), v('bAddr')],
+  [(v('lCity') + ', FL ' + v('lZip')).trim(), (v('bCity') + ', FL ' + v('bZip')).trim()],
+  [v('lEmail'), v('bEmail')],
+  [v('lPhone'), v('bPhone')]
+  ].forEach(([l, b]) => {
+    if (l || b) { doc.text(l || '', ml, y); doc.text(b || '', col2, y); y += 3.8; }
+  });
+
+  y += 2; doc.line(ml, y, W - mr, y); y += 5;
+
+  // Loan Terms
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.text('LOAN TERMS', ml, y); y += 5;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5);
+  const terms = [
+    ['Principal amount', fmt(P)],
+    ['Annual interest rate', '5.00% per annum'],
+    ['Agreement date', fmtD(v('startDate'))],
+    ['Interest at 6 months (actual/365 × 182)', fmt(interest)],
+    ['Total due at repayment', fmt(total)],
+    ['Late fee', lf + '% of overdue amount'],
+    ['Governing venue', county + ' County, Florida'],
+  ];
+  terms.forEach(([k, val]) => {
+    doc.setTextColor(120); doc.text(k, ml, y);
+    doc.setTextColor(0); doc.text(val, ml + 75, y); y += 4.2;
+  });
+
+  y += 2; doc.line(ml, y, W - mr, y); y += 5;
+
+  // Share Pledge
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.text('SHARE PLEDGE / COLLATERAL', ml, y); y += 5;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5);
+  const pledgeTerms = [
+    ['Company issuing shares', 'DealWhisper Inc. (Florida C Corporation) — NOT a party hereto'],
+    ['Pledgor (personal capacity)', v('bName') || 'Borrower'],
+    ['Pledgor total personal ownership', '40,000 shares (40% of outstanding common stock)'],
+    ['Shares pledged as collateral', shares.toLocaleString() + ' shares of Common Stock'],
+    ['Company obligation', 'NONE — this is a personal obligation of Borrower only'],
+    ['Lender recourse against company', 'NONE — Lender\'s sole recourse is Borrower personally and the Pledged Shares'],
+    ['Pledge condition', 'Collateral only — no transfer absent written default notice to Borrower'],
+  ];
+  pledgeTerms.forEach(([k, val]) => {
+    doc.setTextColor(120); doc.text(k, ml, y);
+    doc.setTextColor(0);
+    const lines = doc.splitTextToSize(val, cw - 65);
+    doc.text(lines, ml + 65, y); y += Math.max(4.2, lines.length * 3.8);
+  });
+
+  y += 2; doc.line(ml, y, W - mr, y); y += 5;
+
+  // Repayment Trigger
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.text('REPAYMENT TRIGGER', ml, y); y += 5;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(0);
+  const triggerText = `The entire unpaid principal balance and all accrued interest shall become due and payable in full on the earlier of: (a) the date that is six (6) months from the Agreement Date written above; or (b) the date on which Borrower receives and has access to the proceeds of a Qualified Financing (defined as any priced equity financing resulting in gross proceeds to DealWhisper Inc. of at least $500,000). Borrower shall provide written notice to Lender within five (5) business days of a Qualified Financing closing.`;
+  const trigLines = doc.splitTextToSize(triggerText, cw);
+  doc.text(trigLines, ml, y); y += trigLines.length * 3.5 + 3;
+
+  doc.line(ml, y, W - mr, y); y += 5;
+
+  // Terms & Conditions
+  if (y > 170) { doc.addPage(); y = mt; }
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.text('TERMS AND CONDITIONS', ml, y); y += 5;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(55);
+  const clauses = [
+    `1. PERSONAL OBLIGATION. This Agreement is the personal, individual obligation of Borrower only. DealWhisper Inc. (the "Company") is not a party to this Agreement, has not guaranteed this obligation, and assumes no liability whatsoever hereunder. Lender acknowledges that this is a personal loan to Borrower in Borrower's individual capacity, not a loan to or investment in the Company.`,
+    `2. DISBURSEMENT. Lender agrees to advance the Principal Amount directly to Borrower personally on or about the Agreement Date. Borrower acknowledges receipt and agrees to repay in full with interest per the Repayment Trigger above.`,
+    `3. INTEREST. Interest accrues at 5.00% per annum on the outstanding principal balance, calculated on an actual/365-day basis from the Agreement Date until repayment in full. Pursuant to Florida Statute § 687.02, interest may not exceed 18% per annum; any excess shall be automatically reduced to the statutory maximum.`,
+    `4. REPAYMENT TRIGGER. The entire unpaid principal and accrued interest shall be due and payable in full on the earlier of: (a) the date that is six (6) months from the Agreement Date; or (b) the date on which Borrower personally receives and has access to proceeds from a Qualified Financing — defined as a priced equity financing of the Company resulting in gross proceeds of at least $500,000. For the avoidance of doubt, this trigger refers to Borrower's personal receipt of compensation, distributions, or liquidity from such financing, not the Company's receipt of funds.`,
+    `5. PREPAYMENT. Borrower may prepay this obligation in whole or in part at any time without penalty.`,
+    `6. LATE PAYMENT. Any amount not paid within ten (10) days of its due date shall accrue a late fee of ${lf}% of the overdue amount, not to exceed Florida's usury limit.`,
+    `7. STOCK PLEDGE. As security for Borrower's personal obligations hereunder, Borrower hereby pledges ${shares.toLocaleString()} shares of Common Stock of DealWhisper Inc. (the "Pledged Shares") standing in Borrower's name as collateral. The Pledged Shares shall remain registered in Borrower's name during the term. This pledge: (a) does not alter or impair Borrower's voting or economic rights in the shares; (b) does not give Lender any rights against the Company; (c) does not constitute a transfer of shares; and (d) does not appear on the Company's cap table as an encumbrance until an Event of Default is declared in writing. Lender agrees to keep the existence of this pledge confidential and shall not disclose it to the Company, its co-founders, investors, or any third party without Borrower's prior written consent.`,
+    `8. DEFAULT & REMEDY. An Event of Default occurs if Borrower: (a) fails to repay within the 10-day grace period; (b) files for personal bankruptcy; or (c) fraudulently transfers the Pledged Shares. Upon default and written notice to Borrower, Lender may declare all sums immediately due and/or cause transfer of the Pledged Shares to Lender in satisfaction of the obligation. The Company has no obligation to recognize such transfer except as required by its governing documents.`,
+    `9. NO COMPANY LIABILITY. Lender expressly acknowledges and agrees that: (i) DealWhisper Inc. is not a party hereto; (ii) Lender has no claim against the Company, its assets, its other shareholders, or its officers or directors by reason of this Agreement; (iii) this Agreement does not constitute an equity or debt investment in the Company; and (iv) the Pledged Shares represent collateral only and do not give Lender shareholder rights absent a completed transfer following an uncured Event of Default.`,
+    `10. GOVERNING LAW. This Agreement is governed by Florida law. The parties consent to exclusive jurisdiction in ${county} County, Florida. Florida Statute § 95.11(5)(b) provides a five (5) year statute of limitations.`,
+    `11. ENTIRE AGREEMENT. This instrument constitutes the entire agreement of the parties. Any amendment must be in writing signed by both parties.`,
+    `12. SEVERABILITY. If any provision is unenforceable under Florida law, the remaining provisions remain in full force.`,
+  ];
+  clauses.forEach(c => {
+    const lines = doc.splitTextToSize(c, cw);
+    if (y + lines.length * 3.4 > H - 50) { doc.addPage(); y = mt; }
+    doc.text(lines, ml, y); y += lines.length * 3.4 + 2;
+  });
+
+  // Signatures
+  y += 3; doc.setDrawColor(190); doc.line(ml, y, W - mr, y); y += 5;
+  if (y > H - 55) { doc.addPage(); y = mt; }
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(0);
+  doc.text('SIGNATURES', ml, y); y += 4;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(80);
+  doc.text('By signing below, each party acknowledges they have read and agree to all terms of this Agreement.', ml, y); y += 6;
+
+  const sigW = cw / 2 - 5;
+  try { doc.addImage(document.getElementById('lSig').toDataURL('image/png'), 'PNG', ml, y, sigW, 22); } catch (e) { }
+  try { doc.addImage(document.getElementById('bSig').toDataURL('image/png'), 'PNG', col2 - 5, y, sigW, 22); } catch (e) { }
+  y += 24;
+  doc.setTextColor(0); doc.setFontSize(7.5);
+  doc.text('LENDER: ' + (v('lName') || '___________________'), ml, y);
+  doc.text('BORROWER: ' + (v('bName') || '___________________'), col2 - 5, y); y += 4;
+  doc.setTextColor(120);
+  doc.text('Date: ' + fmtD(v('lDate')), ml, y);
+  doc.text('Date: ' + fmtD(v('bDate')), col2 - 5, y); y += 5;
+
+  // Zelle instructions
+  doc.line(ml, y, W - mr, y); y += 4;
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5); doc.setTextColor(80);
+  doc.text('PAYMENT INSTRUCTIONS — ZELLE', ml, y); y += 4;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(7);
+  doc.text(`Send ${fmt(P)} via Zelle to: 727-400-2225 (Pete / DealWhisper Borrower)`, ml, y); y += 3.5;
+  doc.text(`Memo: DealWhisper Loan ${refNum}`, ml, y); y += 3.5;
+  doc.setTextColor(150);
+  doc.text('This document is legally binding under Florida law. Retain a signed copy for your records.', ml, y);
+
   return doc;
 }
 
-async function exportPDF(){
-  try{const doc=buildPDF();doc.save('loan_agreement_'+refNum+'.pdf');}
-  catch(e){alert('PDF error. Please fill in all required fields.');}
+async function exportPDF() {
+  try { buildPDF().save('DealWhisper_Loan_' + refNum + '.pdf'); }
+  catch (e) { alert('PDF generation failed. Please complete all required fields.'); }
 }
 
-async function sharePDF(){
-  try{
-    const doc=buildPDF();
-    const blob=doc.output('blob');
-    const file=new File([blob],'loan_agreement_'+refNum+'.pdf',{type:'application/pdf'});
-    if(navigator.canShare&&navigator.canShare({files:[file]})){
-      await navigator.share({files:[file],title:'Personal Loan Agreement',text:'Loan Agreement '+refNum});
+async function sharePDF() {
+  try {
+    const doc = buildPDF();
+    const blob = doc.output('blob');
+    const file = new File([blob], 'DealWhisper_Loan_' + refNum + '.pdf', { type: 'application/pdf' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({ files: [file], title: 'DealWhisper Loan Agreement', text: 'Agreement ' + refNum });
     } else {
-      doc.save('loan_agreement_'+refNum+'.pdf');
+      doc.save('DealWhisper_Loan_' + refNum + '.pdf');
     }
-  }catch(e){
-    try{buildPDF().save('loan_agreement_'+refNum+'.pdf');}
-    catch(e2){alert('Unable to generate PDF.');}
+  } catch (e) {
+    try { buildPDF().save('DealWhisper_Loan_' + refNum + '.pdf'); } catch (e2) { alert('Unable to generate PDF.'); }
   }
 }
 
-function startOver(){
-  if(confirm('Start a new agreement? All data will be cleared.')){
-    localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem('loan_form_ref');
-    localStorage.removeItem('loan_form_lSig');
-    localStorage.removeItem('loan_form_bSig');
-    localStorage.removeItem('loan_form_mode');
+function startOver() {
+  if (confirm('Start a new agreement? All data will be cleared.')) {
+    localStorage.removeItem(STORE_KEY);
     location.reload();
   }
 }
-
-const FIELD_IDS = ['principal','rate','startDate','term','dueDate','lateFee','county','lName','lAddr','lCity','lZip','lEmail','lPhone','lDate','bName','bAddr','bCity','bZip','bEmail','bPhone','bDate'];
-
-function saveForm(){
-  const data = {};
-  FIELD_IDS.forEach(id => { const el=document.getElementById(id); if(el) data[id]=el.value; });
-  data._mode = mode;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
-
-function saveSig(id){
-  try{
-    const c=document.getElementById(id);
-    if(c) localStorage.setItem('loan_form_'+id, c.toDataURL());
-  }catch(e){}
-}
-
-function loadForm(){
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if(!raw) return;
-  try{
-    const data = JSON.parse(raw);
-    FIELD_IDS.forEach(id => { const el=document.getElementById(id); if(el && data[id]!==undefined) el.value=data[id]; });
-    if(data._mode) setMode(data._mode);
-  }catch(e){}
-}
-
-function loadSig(id){
-  const dataUrl = localStorage.getItem('loan_form_'+id);
-  if(!dataUrl) return;
-  const c=document.getElementById(id);
-  if(!c) return;
-  const img=new Image();
-  img.onload=()=>{
-    const ctx=c.getContext('2d');
-    ctx.drawImage(img,0,0,c.width,c.height);
-  };
-  img.src=dataUrl;
-}
-
-window.addEventListener('load',()=>{
-  loadForm();
-  setupSig('lSig');
-  setupSig('bSig');
-  setTimeout(()=>{ loadSig('lSig'); loadSig('bSig'); },150);
-  recalc();
-  FIELD_IDS.forEach(id=>{
-    const el=document.getElementById(id);
-    if(el) el.addEventListener('input',saveForm);
-  });
-});
 </script>
 </body>
 </html>
