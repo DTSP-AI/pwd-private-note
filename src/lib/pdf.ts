@@ -153,9 +153,10 @@ export function buildContractPDF(d: PdfData): jsPDF {
 
   doc.line(ml, y, W - mr, y); y += 4;
   doc.setFont("helvetica", "bold"); doc.setFontSize(7.5); doc.setTextColor(80);
-  doc.text("PAYMENT INSTRUCTIONS — ZELLE", ml, y); y += 4;
+  doc.text("PAYMENT INSTRUCTIONS", ml, y); y += 4;
   doc.setFont("helvetica", "normal"); doc.setFontSize(7);
-  doc.text(`Send ${fmt(P)} via Zelle to: 727-400-2225 (Pete / DealWhisper Borrower)`, ml, y); y += 3.5;
+  doc.text(`Option 1 — Zelle: Send ${fmt(P)} to 727-400-2225 (Pete / DealWhisper Borrower)`, ml, y); y += 3.5;
+  doc.text(`Option 2 — Cash App: Send ${fmt(P)} to $jlkern58`, ml, y); y += 3.5;
   doc.text(`Memo: DealWhisper Loan ${d.refNum}`, ml, y); y += 3.5;
   doc.setTextColor(150);
   doc.text("This document is legally binding under Florida law. Retain a signed copy for your records.", ml, y);

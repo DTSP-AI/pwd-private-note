@@ -440,6 +440,38 @@ export default function LoanForm() {
             <div className="text-[11px] text-white/50 text-center mt-2.5">Or open Zelle manually and send to <strong>727-400-2225</strong></div>
           </div>
 
+          {/* Cash App */}
+          <div className="bg-gradient-to-br from-[#00D632] to-[#00a828] border border-[rgba(0,214,50,0.4)] rounded-2xl p-5 mb-5 relative overflow-hidden">
+            <div className="absolute -top-[30px] -right-[30px] w-[100px] h-[100px] rounded-full bg-[rgba(255,255,255,0.1)]" />
+            <div className="flex items-center gap-2.5 mb-3">
+              <div className="w-9 h-9 rounded-lg bg-white flex items-center justify-center font-black text-sm text-[#00D632] shrink-0">$</div>
+              <div>
+                <div className="text-base font-semibold text-white">Send via Cash App</div>
+                <div className="text-xs text-white/60 mt-0.5">Agreement is fully executed — send funds now</div>
+              </div>
+            </div>
+            <div className="font-[family-name:var(--font-cormorant)] text-4xl font-bold text-white mb-1">{fmt(amount)}</div>
+            <div className="text-xs text-white/60 mb-4">To: Pete (DealWhisper Borrower)</div>
+            <div
+              className="font-[family-name:var(--font-dm-mono)] text-base text-white bg-white/[0.15] rounded-lg px-3 py-2 inline-block mb-3.5 cursor-pointer"
+              onClick={() => {
+                navigator.clipboard.writeText("$jlkern58").catch(() => {});
+              }}
+            >
+              💲 $jlkern58
+            </div>
+            <button
+              onClick={() => {
+                window.location.href = `https://cash.app/$jlkern58/${amount}`;
+              }}
+              className="w-full py-3.5 bg-[rgba(0,0,0,0.25)] text-white rounded-[10px] text-[15px] font-bold flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(0,214,50,0.3)] hover:-translate-y-px active:scale-[0.97] transition-all"
+            >
+              Open Cash App
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </button>
+            <div className="text-[11px] text-white/50 text-center mt-2.5">Or open Cash App manually and send to <strong>$jlkern58</strong></div>
+          </div>
+
           {/* Export buttons */}
           <div className="flex flex-col gap-2.5 mt-2">
             <button onClick={exportContract} className="w-full py-4 rounded-xl text-[15px] font-semibold bg-gradient-to-br from-gold to-[#a87828] text-bg shadow-[0_4px_20px_rgba(201,168,76,0.3)] active:scale-[0.97] transition-all">
