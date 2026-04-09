@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-bg: #0d0f14;
+  --color-bg2: #141720;
+  --color-bg3: #1c2030;
+  --color-surface: #1e2235;
+  --color-gold: #c9a84c;
+  --color-gold2: #e8c97a;
+  --color-gold-dim: rgba(201,168,76,0.12);
+  --color-gold-glow: rgba(201,168,76,0.25);
+  --color-text: #f0ede8;
+  --color-text2: #8b8fa8;
+  --color-text3: #5a5e78;
+  --color-border: rgba(255,255,255,0.07);
+  --color-border2: rgba(201,168,76,0.3);
+  --color-danger: #e05c5c;
+  --color-success: #5cb88a;
+  --font-sans: var(--font-dm-sans);
+  --font-mono: var(--font-dm-mono);
+  --font-serif: var(--font-cormorant);
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(201,168,76,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 100%, rgba(100,120,200,0.04) 0%, transparent 60%),
+    #0d0f14;
+}
+
+/* Signature canvas */
+canvas.sig {
+  touch-action: none;
+  cursor: crosshair;
+}
+
+/* Hide number spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.4);
+}
