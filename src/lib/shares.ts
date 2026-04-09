@@ -17,7 +17,10 @@ export const TIERS: Tier[] = [
 ];
 
 export const CUSTOM_OPTIONS = [
-  { value: 500, label: "$500", shares: 100 },
+  { value: 200, label: "$200", shares: 40 },
+  { value: 400, label: "$400", shares: 80 },
+  { value: 600, label: "$600", shares: 120 },
+  { value: 800, label: "$800", shares: 160 },
   { value: 1000, label: "$1,000", shares: 200 },
   { value: 1500, label: "$1,500", shares: 300 },
   { value: 2000, label: "$2,000", shares: 400 },
