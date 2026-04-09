@@ -423,8 +423,8 @@ select option { background: var(--bg2); color: var(--text); }
           <div class="custom-note">20% share rate — amounts over $10,000 earn 25% share rate on the excess</div>
           <div class="field" style="margin-bottom:0">
             <label>Loan Amount ($)</label>
-            <select id="customAmt" onchange="calcCustom()">
-              <option value="0">— Select amount —</option>
+            <select id="customAmt" onchange="calcCustom()" onclick="event.stopPropagation()">
+              <option value="0">--- Select amount ---</option>
             </select>
           </div>
         </div>
