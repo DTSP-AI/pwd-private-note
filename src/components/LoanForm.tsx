@@ -122,7 +122,7 @@ export default function LoanForm() {
   };
 
   // Shared input classes
-  const inputCls = "w-full text-[15px] px-3.5 py-3 border border-border rounded-xl bg-bg2 text-text font-[family-name:var(--font-dm-sans)] focus:outline-none focus:border-gold focus:ring-3 focus:ring-gold-glow transition-colors placeholder:text-text3";
+  const inputCls = "w-full text-[15px] px-3.5 py-3 border border-[rgba(255,255,255,0.07)] rounded-xl bg-[#141720] text-[#f0ede8] font-[family-name:var(--font-dm-sans)] focus:outline-none focus:border-[#c9a84c] focus:ring-3 focus:ring-[rgba(201,168,76,0.25)] transition-colors placeholder:text-[#5a5e78]";
   const selectCls = inputCls + " cursor-pointer appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2712%27%20height=%278%27%20viewBox=%270%200%2012%208%27%3E%3Cpath%20d=%27M1%201l5%205%205-5%27%20stroke=%27%238b8fa8%27%20stroke-width=%271.5%27%20fill=%27none%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27/%3E%3C/svg%3E')] bg-no-repeat bg-[position:right_14px_center]";
   const labelCls = "block text-[11px] font-medium tracking-[0.06em] uppercase text-text2 mb-1.5";
 
@@ -153,7 +153,7 @@ export default function LoanForm() {
         <div className="mx-5 mb-3 bg-bg3 border border-border2 rounded-xl px-3.5 py-2.5 flex justify-between items-center text-xs text-text2 animate-[fadeIn_0.3s_ease]">
           <span>Saved session found. Restore your data?</span>
           <div className="flex gap-2">
-            <button onClick={restoreSession} className="text-xs font-semibold px-2.5 py-1 rounded-md bg-gold text-bg">Restore</button>
+            <button onClick={restoreSession} className="text-xs font-semibold px-2.5 py-1 rounded-md bg-gold text-[#0d0f14]">Restore</button>
             <button onClick={clearSession} className="text-xs font-semibold px-2.5 py-1 rounded-md bg-bg2 text-text2 border border-border">Start fresh</button>
           </div>
         </div>
@@ -192,7 +192,7 @@ export default function LoanForm() {
                   <div className="flex justify-between items-start">
                     <div>
                       {tier.tag && (
-                        <span className="inline-block text-[9px] font-semibold tracking-[0.12em] uppercase bg-gold text-bg rounded px-1.5 py-0.5 mb-1.5">
+                        <span className="inline-block text-[9px] font-semibold tracking-[0.12em] uppercase bg-gold text-[#0d0f14] rounded px-1.5 py-0.5 mb-1.5">
                           {tier.tag}
                         </span>
                       )}
@@ -260,7 +260,7 @@ export default function LoanForm() {
           )}
 
           <div className="mt-7">
-            <button onClick={() => goTo(1)} className="w-full py-4 rounded-xl text-[15px] font-semibold bg-gradient-to-br from-gold to-[#a87828] text-bg shadow-[0_4px_20px_rgba(201,168,76,0.3)] hover:shadow-[0_6px_28px_rgba(201,168,76,0.45)] active:scale-[0.97] transition-all">
+            <button onClick={() => goTo(1)} className="w-full py-4 rounded-xl text-[15px] font-semibold bg-gradient-to-br from-gold to-[#a87828] text-[#0d0f14] shadow-[0_4px_20px_rgba(201,168,76,0.3)] hover:shadow-[0_6px_28px_rgba(201,168,76,0.45)] active:scale-[0.97] transition-all">
               Continue — Loan Terms
             </button>
           </div>
@@ -308,7 +308,7 @@ export default function LoanForm() {
 
           <div className="flex gap-2.5 mt-7">
             <button onClick={() => goTo(0)} className="flex-1 py-4 rounded-xl text-[15px] font-semibold bg-bg2 text-text2 border border-border hover:text-text hover:border-border2 transition-all">Back</button>
-            <button onClick={() => goTo(2)} className="flex-1 py-4 rounded-xl text-[15px] font-semibold bg-gradient-to-br from-gold to-[#a87828] text-bg shadow-[0_4px_20px_rgba(201,168,76,0.3)] active:scale-[0.97] transition-all">Continue — Lender</button>
+            <button onClick={() => goTo(2)} className="flex-1 py-4 rounded-xl text-[15px] font-semibold bg-gradient-to-br from-gold to-[#a87828] text-[#0d0f14] shadow-[0_4px_20px_rgba(201,168,76,0.3)] active:scale-[0.97] transition-all">Continue — Lender</button>
           </div>
         </div>
       )}
@@ -334,7 +334,7 @@ export default function LoanForm() {
 
           <div className="flex gap-2.5 mt-7">
             <button onClick={() => goTo(1)} className="flex-1 py-4 rounded-xl text-[15px] font-semibold bg-bg2 text-text2 border border-border hover:text-text hover:border-border2 transition-all">Back</button>
-            <button onClick={() => goTo(3)} className="flex-1 py-4 rounded-xl text-[15px] font-semibold bg-gradient-to-br from-gold to-[#a87828] text-bg shadow-[0_4px_20px_rgba(201,168,76,0.3)] active:scale-[0.97] transition-all">Continue — Borrower</button>
+            <button onClick={() => goTo(3)} className="flex-1 py-4 rounded-xl text-[15px] font-semibold bg-gradient-to-br from-gold to-[#a87828] text-[#0d0f14] shadow-[0_4px_20px_rgba(201,168,76,0.3)] active:scale-[0.97] transition-all">Continue — Borrower</button>
           </div>
         </div>
       )}
@@ -360,7 +360,7 @@ export default function LoanForm() {
 
           <div className="flex gap-2.5 mt-7">
             <button onClick={() => goTo(2)} className="flex-1 py-4 rounded-xl text-[15px] font-semibold bg-bg2 text-text2 border border-border hover:text-text hover:border-border2 transition-all">Back</button>
-            <button onClick={() => goTo(4)} className="flex-1 py-4 rounded-xl text-[15px] font-semibold bg-gradient-to-br from-gold to-[#a87828] text-bg shadow-[0_4px_20px_rgba(201,168,76,0.3)] active:scale-[0.97] transition-all">Review Agreement</button>
+            <button onClick={() => goTo(4)} className="flex-1 py-4 rounded-xl text-[15px] font-semibold bg-gradient-to-br from-gold to-[#a87828] text-[#0d0f14] shadow-[0_4px_20px_rgba(201,168,76,0.3)] active:scale-[0.97] transition-all">Review Agreement</button>
           </div>
         </div>
       )}
@@ -474,7 +474,7 @@ export default function LoanForm() {
 
           {/* Export buttons */}
           <div className="flex flex-col gap-2.5 mt-2">
-            <button onClick={exportContract} className="w-full py-4 rounded-xl text-[15px] font-semibold bg-gradient-to-br from-gold to-[#a87828] text-bg shadow-[0_4px_20px_rgba(201,168,76,0.3)] active:scale-[0.97] transition-all">
+            <button onClick={exportContract} className="w-full py-4 rounded-xl text-[15px] font-semibold bg-gradient-to-br from-gold to-[#a87828] text-[#0d0f14] shadow-[0_4px_20px_rgba(201,168,76,0.3)] active:scale-[0.97] transition-all">
               Download Signed Contract PDF
             </button>
             <button onClick={exportCert} className="w-full py-4 rounded-xl text-[15px] font-semibold bg-gradient-to-br from-[#2a6041] to-[#1a4030] text-text shadow-[0_4px_20px_rgba(90,184,138,0.3)] active:scale-[0.97] transition-all">
